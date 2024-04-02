@@ -9,5 +9,5 @@ export default defineNuxtConfig({
     prefix: '',
     componentDir: './src/components/ui'
   },
-  css: ['~/styles/main.sass', '~/styles/tailwind.sass'],
+  css: ['~/styles/index.sass'],
 })
