@@ -1,0 +1,16 @@
+{
+  "$schema": "https://shadcn-vue.com/schema.json",
+  "style": "default",
+  "typescript": true,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/styles/tailwind.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "framework": "nuxt",
+  "aliases": {
+    "components": "@src/components",
+    "utils": "@src/lib/utils"
+  }
+}
