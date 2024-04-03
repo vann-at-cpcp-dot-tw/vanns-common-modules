@@ -6,6 +6,18 @@
       "dom.iterable",
       "esnext"
     ],
+    // "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "~~/*": ["./*"],
+      "@src/*": ["./src/*"],
+      "@root/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,17 +29,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    // "noImplicitAny": false,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@src/*": ["./src/*"],
-      "@root/*": ["./*"]
-    },
     "forceConsistentCasingInFileNames": true
+    // "noImplicitAny": false,
   },
   "include": [
     "next-env.d.ts",

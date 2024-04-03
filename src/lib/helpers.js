@@ -215,51 +215,6 @@ export const toCamelCase = function(str='', breakKey='-', upperCamelCase=false){
   return str
 }
 
-
-export const fetchGraphQL = async function (query, { variables } = {}) {
-
-  const API_URL = `${process.env.NEXT_PUBLIC_API_BASE}graphql`
-
-  const headers = {
-    'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache',
-  }
-
-  // if ( process.env.WORDPRESS_AUTH_REFRESH_TOKEN ){
-  //   headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`
-  // }
-
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      // cache: 'no-cache',
-      headers,
-      body: JSON.stringify({
-        query: query?.loc?.source?.body || query, // 此處因可能傳進 GraphQL AST，或原始查詢字串，所以需加以判斷
-        variables,
-      }),
-      next: {
-        revalidate: Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
-      },
-    })
-
-    const json = await res.json()
-
-    if( json.errors ){
-      console.log(json.errors)
-      return {
-        errors: json.errors
-      }
-    }
-
-    return json.data
-
-  } catch (error) {
-    console.error(error)
-    throw new Error('Failed to fetch API')
-  }
-}
-
 export const convertYoutubeUrlToEmbed = function(input){
   let youtubeID
 

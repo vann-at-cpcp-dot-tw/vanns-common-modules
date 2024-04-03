@@ -1,4 +1,4 @@
-import { genImageBlurHash } from "@root/lib/next/genImageBlurHash"
+import { genImageBlurHash } from "~/lib/next/genImageBlurHash"
 import { useState, useEffect, useMemo } from "react"
 
 export default function useImageBlurHashes(imgUrlList:(string | undefined)[], args?:{w?:number, q?:number}){

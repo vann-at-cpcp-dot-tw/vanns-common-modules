@@ -1,4 +1,4 @@
-import useWindowSize from "@root/use/react/useWindowSize"
+import useWindowSize from "~/use/react/useWindowSize"
 import { useEffect, useState } from "react"
 
 export default function useIsClient(){

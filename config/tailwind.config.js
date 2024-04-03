@@ -76,6 +76,8 @@ module.exports = {
         800: '800',
         900: '900',
       },
+
+      /* ::: Created by shadcn/ui ::: */
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -110,6 +112,7 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+
         ...customColors,
       },
       borderRadius: {
@@ -142,6 +145,7 @@ module.exports = {
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
         'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
+      /* ::: Created by shadcn/ui ::: */
     },
   },
   plugins: [animate],
