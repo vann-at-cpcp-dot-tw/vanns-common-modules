@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import usePathnameWithoutLang from "~/use/next/usePathnameWithoutLang";
+import usePathnameWithoutLang from "../../use/next/usePathnameWithoutLang";
 // @ts-ignore
 import { i18n } from "~~/config/next/i18n.config";
 export var pathWithLang = function (path, lang) {
