@@ -8,8 +8,7 @@ import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 const GRAPHQL_API_URL = process.env.NEXT_PUBLIC_GRAPHQL_API
 const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
 
-interface TypeFetchQLArgs {
-  lang: string
+export type TypeFetchQLArgs = {
   variables?:{
     [key:string]: any
   }
@@ -18,15 +17,19 @@ interface TypeFetchQLArgs {
   }
 }
 
-export function makeApolloClient(args?:{context?:any}){
+export function makeApolloClient(args?:{
+  context?:any,
+  memoryCacheOptions?: {[key:string]:any}
+  middlewares?: ApolloLink[]
+}){
 
-  const { context } = args ?? {}
+  const { context, memoryCacheOptions, middlewares } = args ?? {}
 
   const httpLink = new HttpLink({
     uri: GRAPHQL_API_URL,
   })
 
-  const middleware = setContext((operation, prevContext) => {
+  const headerMiddleware = setContext((operation, prevContext) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
@@ -38,64 +41,47 @@ export function makeApolloClient(args?:{context?:any}){
   })
 
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache({
-      // typePolicies: {
-      //   ZipDTO: {
-      //     keyFields: ['name', 'latitude', 'longitude'],
-      //   },
-      // },
-    }),
+    // cache: new NextSSRInMemoryCache({
+    //   typePolicies: {
+    //     ZipDTO: {
+    //       keyFields: ['name', 'latitude', 'longitude'],
+    //     },
+    //   },
+    // }),
+    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
     link: typeof window === "undefined"
       ? ApolloLink.from([
         new SSRMultipartLink({
           stripDefer: true,
         }),
-        middleware,
+        headerMiddleware,
+        ...(middlewares || []),
         httpLink,
       ])
       : ApolloLink.from([
-        middleware,
+        headerMiddleware,
+        ...(middlewares || []),
         httpLink
       ])
   })
 }
 
-export const { getClient } = registerApolloClient(()=>{
-  return makeApolloClient()
-})
+export const { getClient } = registerApolloClient(()=>makeApolloClient())
 
 export const fetchGQL = async function(query:TypedDocumentNode, args:TypeFetchQLArgs){
-  const { variables, context, lang } = args ?? { variables: {}, context: null, lang: 'zh' }
-  const localeCode = convertLocaleCode(lang, 'long')
-
+  const { variables, context:passedContext } = args ?? { variables:{}, context:{} }
+  const context = passedContext || {}
   const result = await getClient().query({
     query,
     variables: variables ?variables :{},
-    context: context
-      ? {
-        fetchOptions: {
-          next: {
-            revalidate
-          },
-        },
-        ...{
-          ...context,
-          headers: {
-            ...(context?.headers || {}),
-            "accept-language": localeCode
-          }
-        }
-      }
-      : {
-        headers: {
-          "accept-language": localeCode
-        },
-        fetchOptions: {
-          next: {
-            revalidate
-          },
+    context: {
+      fetchOptions: {
+        next: {
+          revalidate
         },
       },
+      ...context,
+    }
   })
 
   return result?.data
