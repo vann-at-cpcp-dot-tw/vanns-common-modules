@@ -1,6 +1,5 @@
 import { ApolloLink, HttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
-import { convertLocaleCode } from "~/use/next/useLangGuard"
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink} from "@apollo/experimental-nextjs-app-support/ssr"
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
@@ -69,11 +68,12 @@ export function makeApolloClient(args?:{
 export const { getClient } = registerApolloClient(()=>makeApolloClient())
 
 export const fetchGQL = async function(query:TypedDocumentNode, args:TypeFetchQLArgs){
-  const { variables, context:passedContext } = args ?? { variables:{}, context:{} }
+  const { variables:passedVariables, context:passedContext } = args ?? { variables:{}, context:{} }
   const context = passedContext || {}
+  const variables = passedVariables || {}
   const result = await getClient().query({
     query,
-    variables: variables ?variables :{},
+    variables,
     context: {
       fetchOptions: {
         next: {
