@@ -9,7 +9,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    // "noEmit": true,
+    "strictNullChecks": true,
+    "declaration": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -17,7 +18,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    // "noImplicitAny": false,
+    "noImplicitAny": true,
     "paths": {
       "~/*": ["./src/*"],
       "~~/*": ["./*"],
@@ -31,3 +32,4 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
+

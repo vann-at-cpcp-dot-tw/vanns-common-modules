@@ -69,7 +69,11 @@ export function makeApolloClient(args) {
     var headerMiddleware = setContext(function (operation, prevContext) {
         var _a;
         var prevHeaders = prevContext.headers;
-        return __assign(__assign({}, prevContext), { headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
+        return __assign(__assign({}, prevContext), { fetchOptions: {
+                next: {
+                    revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || 60
+                },
+            }, headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
     });
     if (typeof window === "undefined") {
         return new ApolloClient({
@@ -122,11 +126,7 @@ export var fetchGQL = function (query, args) {
                     return [4 /*yield*/, getClient().query({
                             query: query,
                             variables: variables,
-                            context: __assign({ fetchOptions: {
-                                    next: {
-                                        revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || 60
-                                    },
-                                } }, context)
+                            context: context,
                         })];
                 case 1:
                     result = _b.sent();

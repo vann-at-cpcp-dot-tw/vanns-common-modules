@@ -35,6 +35,11 @@ export function makeApolloClient(
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
+      fetchOptions: {
+        next: {
+          revalidate: context?.revalidate || 60
+        },
+      },
       headers: {
         ...prevHeaders,
         ...(context?.headers ?? {})
@@ -89,14 +94,7 @@ export const fetchGQL = async function(query:TypedDocumentNode, args:TypeFetchQL
   const result = await getClient().query({
     query,
     variables,
-    context: {
-      fetchOptions: {
-        next: {
-          revalidate: context?.revalidate || 60
-        },
-      },
-      ...context,
-    }
+    context,
   })
 
   return result?.data
