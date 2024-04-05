@@ -7,18 +7,15 @@ import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE}graphql`
 const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
 
-export interface IFetchGQL {
-  query: TypedDocumentNode
-  args?: {
-    variables?: {
-      [key:string]: any;
-    }
-    context?:{
-      [key:string]: any;
-    }
-    getClient?: Function;
-    [key:string]: any
+export interface IFetchGQLArgs {
+  variables?: {
+    [key:string]: any;
   }
+  context?:{
+    [key:string]: any;
+  }
+  getClient?: Function;
+  [key:string]: any
 }
 
 export interface IMakeApolloClient {
@@ -99,7 +96,7 @@ export function makeApolloClient(args?:IMakeApolloClient){
   }
 }
 
-export const fetchGQL = async function({query, args}:IFetchGQL){
+export const fetchGQL = async function(query:TypedDocumentNode, args:IFetchGQLArgs){
 
   const { variables:passedVariables, context:passedContext } = args ?? { variables:{}, context:{} }
   const context = passedContext || {}

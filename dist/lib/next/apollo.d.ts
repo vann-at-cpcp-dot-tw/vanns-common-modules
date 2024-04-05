@@ -1,17 +1,14 @@
 import { ApolloLink, ApolloClient } from "@apollo/client";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
-export interface IFetchGQL {
-    query: TypedDocumentNode;
-    args?: {
-        variables?: {
-            [key: string]: any;
-        };
-        context?: {
-            [key: string]: any;
-        };
-        getClient?: Function;
+export interface IFetchGQLArgs {
+    variables?: {
         [key: string]: any;
     };
+    context?: {
+        [key: string]: any;
+    };
+    getClient?: Function;
+    [key: string]: any;
 }
 export interface IMakeApolloClient {
     uri?: string;
@@ -26,4 +23,4 @@ export interface IMakeApolloClient {
 export declare function makeApolloClient(args?: IMakeApolloClient): {
     getClient: () => ApolloClient<any>;
 };
-export declare const fetchGQL: ({ query, args }: IFetchGQL) => Promise<any>;
+export declare const fetchGQL: (query: TypedDocumentNode, args: IFetchGQLArgs) => Promise<any>;

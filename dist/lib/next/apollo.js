@@ -110,14 +110,13 @@ export function makeApolloClient(args) {
         getClient: getClient,
     };
 }
-export var fetchGQL = function (_a) {
-    return __awaiter(this, arguments, void 0, function (_b) {
-        var _c, passedVariables, passedContext, context, variables, getClient, result;
-        var query = _b.query, args = _b.args;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+export var fetchGQL = function (query, args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, passedVariables, passedContext, context, variables, getClient, result;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _c = args !== null && args !== void 0 ? args : { variables: {}, context: {} }, passedVariables = _c.variables, passedContext = _c.context;
+                    _a = args !== null && args !== void 0 ? args : { variables: {}, context: {} }, passedVariables = _a.variables, passedContext = _a.context;
                     context = passedContext || {};
                     variables = passedVariables || {};
                     getClient = args === null || args === void 0 ? void 0 : args.getClient;
@@ -134,7 +133,7 @@ export var fetchGQL = function (_a) {
                             context: context,
                         })];
                 case 1:
-                    result = _d.sent();
+                    result = _b.sent();
                     return [2 /*return*/, result === null || result === void 0 ? void 0 : result.data];
             }
         });
