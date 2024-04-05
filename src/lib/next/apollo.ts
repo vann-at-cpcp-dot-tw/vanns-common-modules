@@ -11,12 +11,13 @@ export interface IFetchGQL {
   query: TypedDocumentNode
   args?: {
     variables?: {
-      [key:string]: any
+      [key:string]: any;
     }
     context?:{
-      [key:string]: any
+      [key:string]: any;
     }
-    getClient?: Function
+    getClient?: Function;
+    [key:string]: any
   }
 }
 

@@ -10,6 +10,7 @@ export interface IFetchGQL {
             [key: string]: any;
         };
         getClient?: Function;
+        [key: string]: any;
     };
 }
 export interface IMakeApolloClient {
