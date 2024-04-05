@@ -1,4 +1,4 @@
-import { ApolloLink, HttpLink } from "@apollo/client"
+import { ApolloLink, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink} from "@apollo/experimental-nextjs-app-support/ssr"
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
@@ -39,17 +39,17 @@ export function makeApolloClient(args?:{
     }
   })
 
-  return new NextSSRApolloClient({
-    // cache: new NextSSRInMemoryCache({
-    //   typePolicies: {
-    //     ZipDTO: {
-    //       keyFields: ['name', 'latitude', 'longitude'],
-    //     },
-    //   },
-    // }),
-    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-    link: typeof window === "undefined"
-      ? ApolloLink.from([
+  if( typeof window === "undefined" ){
+    return new ApolloClient({
+      // cache: new NextSSRInMemoryCache({
+      //   typePolicies: {
+      //     ZipDTO: {
+      //       keyFields: ['name', 'latitude', 'longitude'],
+      //     },
+      //   },
+      // }),
+      cache: new InMemoryCache(memoryCacheOptions || {}),
+      link: ApolloLink.from([
         new SSRMultipartLink({
           stripDefer: true,
         }),
@@ -57,12 +57,24 @@ export function makeApolloClient(args?:{
         ...(middlewares || []),
         httpLink,
       ])
-      : ApolloLink.from([
-        headerMiddleware,
-        ...(middlewares || []),
-        httpLink
-      ])
-  })
+    })
+  }else{
+    return new NextSSRApolloClient({
+      // cache: new NextSSRInMemoryCache({
+      //   typePolicies: {
+      //     ZipDTO: {
+      //       keyFields: ['name', 'latitude', 'longitude'],
+      //     },
+      //   },
+      // }),
+      cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
+      link: ApolloLink.from([
+          headerMiddleware,
+          ...(middlewares || []),
+          httpLink
+        ])
+    })
+  }
 }
 
 export const { getClient } = registerApolloClient(()=>makeApolloClient())

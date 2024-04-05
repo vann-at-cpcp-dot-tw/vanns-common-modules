@@ -54,7 +54,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloLink, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink } from "@apollo/experimental-nextjs-app-support/ssr";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
@@ -70,17 +70,17 @@ export function makeApolloClient(args) {
         var prevHeaders = prevContext.headers;
         return __assign(__assign({}, prevContext), { headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
     });
-    return new NextSSRApolloClient({
-        // cache: new NextSSRInMemoryCache({
-        //   typePolicies: {
-        //     ZipDTO: {
-        //       keyFields: ['name', 'latitude', 'longitude'],
-        //     },
-        //   },
-        // }),
-        cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-        link: typeof window === "undefined"
-            ? ApolloLink.from(__spreadArray(__spreadArray([
+    if (typeof window === "undefined") {
+        return new ApolloClient({
+            // cache: new NextSSRInMemoryCache({
+            //   typePolicies: {
+            //     ZipDTO: {
+            //       keyFields: ['name', 'latitude', 'longitude'],
+            //     },
+            //   },
+            // }),
+            cache: new InMemoryCache(memoryCacheOptions || {}),
+            link: ApolloLink.from(__spreadArray(__spreadArray([
                 new SSRMultipartLink({
                     stripDefer: true,
                 }),
@@ -88,12 +88,25 @@ export function makeApolloClient(args) {
             ], (middlewares || []), true), [
                 httpLink,
             ], false))
-            : ApolloLink.from(__spreadArray(__spreadArray([
+        });
+    }
+    else {
+        return new NextSSRApolloClient({
+            // cache: new NextSSRInMemoryCache({
+            //   typePolicies: {
+            //     ZipDTO: {
+            //       keyFields: ['name', 'latitude', 'longitude'],
+            //     },
+            //   },
+            // }),
+            cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
+            link: ApolloLink.from(__spreadArray(__spreadArray([
                 headerMiddleware
             ], (middlewares || []), true), [
                 httpLink
             ], false))
-    });
+        });
+    }
 }
 export var getClient = registerApolloClient(function () { return makeApolloClient(); }).getClient;
 export var fetchGQL = function (query, args) {
