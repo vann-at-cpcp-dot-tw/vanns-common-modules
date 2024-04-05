@@ -4,27 +4,25 @@ import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink} from "@apo
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_BASE}graphql`
 const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
 
 export interface IFetchGQLArgs {
+  query: TypedDocumentNode,
   variables?: {
     [key:string]: any;
   }
   context?:{
     [key:string]: any;
   }
-  getClient?: Function;
-  [key:string]: any
 }
 
 export interface IMakeApolloClient {
-  uri?: string
-  context?: any,
-  isRSC?: boolean
-  revalidate?: number,
-  memoryCacheOptions?: {[key:string]:any}
-  middlewares?: ApolloLink[]
+  uri: string;
+  context?: any;
+  isRSC?: boolean;
+  revalidate?: number;
+  memoryCacheOptions?: {[key:string]:any};
+  middlewares?: ApolloLink[];
 }
 
 
@@ -96,26 +94,7 @@ export function makeApolloClient(args?:IMakeApolloClient){
   }
 }
 
-export const fetchGQL = async function(query:TypedDocumentNode, args:IFetchGQLArgs){
-
-  const { variables:passedVariables, context:passedContext } = args ?? { variables:{}, context:{} }
-  const context = passedContext || {}
-  const variables = passedVariables || {}
-  let getClient = args?.getClient
-
-  if( typeof getClient !== 'function' ){
-    getClient = makeApolloClient({
-      uri: API_URL,
-      isRSC: true,
-      context,
-    }).getClient
-  }
-
-  const result = await getClient().query({
-    query,
-    variables,
-    context,
-  })
-
+export const fetchGQL = async function(getClient:Function, args:IFetchGQLArgs){
+  const result = await getClient().query(args)
   return result?.data
 }

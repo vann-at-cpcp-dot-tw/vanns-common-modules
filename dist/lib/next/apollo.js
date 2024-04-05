@@ -58,7 +58,6 @@ import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/clien
 import { setContext } from "@apollo/client/link/context";
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink } from "@apollo/experimental-nextjs-app-support/ssr";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-var API_URL = "".concat(process.env.NEXT_PUBLIC_API_BASE, "graphql");
 var REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60);
 export function makeApolloClient(args) {
     var _a = args !== null && args !== void 0 ? args : {}, uri = _a.uri, context = _a.context, isRSC = _a.isRSC, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
@@ -110,30 +109,14 @@ export function makeApolloClient(args) {
         getClient: getClient,
     };
 }
-export var fetchGQL = function (query, args) {
+export var fetchGQL = function (getClient, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, passedVariables, passedContext, context, variables, getClient, result;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = args !== null && args !== void 0 ? args : { variables: {}, context: {} }, passedVariables = _a.variables, passedContext = _a.context;
-                    context = passedContext || {};
-                    variables = passedVariables || {};
-                    getClient = args === null || args === void 0 ? void 0 : args.getClient;
-                    if (typeof getClient !== 'function') {
-                        getClient = makeApolloClient({
-                            uri: API_URL,
-                            isRSC: true,
-                            context: context,
-                        }).getClient;
-                    }
-                    return [4 /*yield*/, getClient().query({
-                            query: query,
-                            variables: variables,
-                            context: context,
-                        })];
+        var result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getClient().query(args)];
                 case 1:
-                    result = _b.sent();
+                    result = _a.sent();
                     return [2 /*return*/, result === null || result === void 0 ? void 0 : result.data];
             }
         });
