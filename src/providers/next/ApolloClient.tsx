@@ -14,10 +14,10 @@ export default function ApolloClientProvider({
   makeClient,
 }:{
   children: ReactNode,
-  makeClient?: Function
+  makeClient: Function
 }){
   return <ApolloNextAppProvider makeClient={()=>{
-    return makeClient?.() || makeApolloClient()
+    return makeClient()
   }}>
     { children }
   </ApolloNextAppProvider>
