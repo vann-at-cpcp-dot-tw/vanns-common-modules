@@ -4,28 +4,31 @@ import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink} from "@apo
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 
-const GRAPHQL_API_URL = process.env.NEXT_PUBLIC_GRAPHQL_API
-const revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
-
 export type TypeFetchQLArgs = {
   variables?:{
     [key:string]: any
   }
   context?:{
     [key:string]: any
-  }
+  },
 }
 
-export function makeApolloClient(args?:{
-  context?:any,
-  memoryCacheOptions?: {[key:string]:any}
-  middlewares?: ApolloLink[]
-}){
+function getURI(operation:any) {
+  return operation.getContext().uri || `${process.env.NEXT_PUBLIC_API_BASE}graphql`;
+ }
+
+export function makeApolloClient(
+  args?:{
+    context?: any,
+    memoryCacheOptions?: {[key:string]:any}
+    middlewares?: ApolloLink[]
+  }
+){
 
   const { context, memoryCacheOptions, middlewares } = args ?? {}
 
   const httpLink = new HttpLink({
-    uri: GRAPHQL_API_URL,
+    uri: getURI,
   })
 
   const headerMiddleware = setContext((operation, prevContext) => {
@@ -89,7 +92,7 @@ export const fetchGQL = async function(query:TypedDocumentNode, args:TypeFetchQL
     context: {
       fetchOptions: {
         next: {
-          revalidate
+          revalidate: context?.revalidate || 60
         },
       },
       ...context,

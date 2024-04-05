@@ -58,12 +58,13 @@ import { ApolloLink, HttpLink, ApolloClient, InMemoryCache } from "@apollo/clien
 import { setContext } from "@apollo/client/link/context";
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink } from "@apollo/experimental-nextjs-app-support/ssr";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-var GRAPHQL_API_URL = process.env.NEXT_PUBLIC_GRAPHQL_API;
-var revalidate = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60);
+function getURI(operation) {
+    return operation.getContext().uri || "".concat(process.env.NEXT_PUBLIC_API_BASE, "graphql");
+}
 export function makeApolloClient(args) {
     var _a = args !== null && args !== void 0 ? args : {}, context = _a.context, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
     var httpLink = new HttpLink({
-        uri: GRAPHQL_API_URL,
+        uri: getURI,
     });
     var headerMiddleware = setContext(function (operation, prevContext) {
         var _a;
@@ -123,7 +124,7 @@ export var fetchGQL = function (query, args) {
                             variables: variables,
                             context: __assign({ fetchOptions: {
                                     next: {
-                                        revalidate: revalidate
+                                        revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || 60
                                     },
                                 } }, context)
                         })];
