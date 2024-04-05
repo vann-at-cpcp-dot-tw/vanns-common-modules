@@ -68,7 +68,7 @@ export function makeApolloClient(args) {
     var headerMiddleware = setContext(function (operation, prevContext) {
         var _a;
         var prevHeaders = prevContext.headers;
-        return __assign(__assign({}, prevContext), { headers: __assign(__assign({}, prevHeaders), ((_a = context.headers) !== null && _a !== void 0 ? _a : {})) });
+        return __assign(__assign({}, prevContext), { headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
     });
     return new NextSSRApolloClient({
         // cache: new NextSSRInMemoryCache({

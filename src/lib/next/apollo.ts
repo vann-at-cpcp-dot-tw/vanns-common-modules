@@ -34,7 +34,7 @@ export function makeApolloClient(args?:{
       ...prevContext,
       headers: {
         ...prevHeaders,
-        ...(context.headers ?? {})
+        ...(context?.headers ?? {})
       }
     }
   })
@@ -47,7 +47,7 @@ export function makeApolloClient(args?:{
     //     },
     //   },
     // }),
-    cache: new NextSSRInMemoryCache(),
+    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
     link: typeof window === "undefined"
       ? ApolloLink.from([
         new SSRMultipartLink({
