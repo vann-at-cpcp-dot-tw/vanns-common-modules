@@ -1,21 +1,25 @@
 import { ApolloLink, ApolloClient } from "@apollo/client";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
-export type TypeFetchQLArgs = {
+export interface IFetchQL {
     variables?: {
         [key: string]: any;
     };
     context?: {
         [key: string]: any;
     };
-};
-export declare function makeApolloClient(args?: {
+    getClient?: Function;
+}
+export interface IMakeApolloClient {
+    uri?: string;
     context?: any;
+    isRSC?: boolean;
+    revalidate?: number;
     memoryCacheOptions?: {
         [key: string]: any;
     };
     middlewares?: ApolloLink[];
-}): ApolloClient<import("@apollo/client").NormalizedCacheObject>;
-export declare const getClient: () => ApolloClient<any>;
-export declare const fetchGQL: (query: TypedDocumentNode, args: TypeFetchQLArgs) => Promise<{
-    [key: string]: any;
-}>;
+}
+export declare function makeApolloClient(args?: IMakeApolloClient): {
+    getClient: () => ApolloClient<any>;
+};
+export declare const fetchGQL: (query: TypedDocumentNode, args: IFetchQL) => Promise<any>;

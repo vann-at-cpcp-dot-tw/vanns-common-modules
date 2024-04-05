@@ -1,45 +1,51 @@
-import { ApolloLink, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client"
+import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink} from "@apollo/experimental-nextjs-app-support/ssr"
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 
-export type TypeFetchQLArgs = {
+const API_URL = `${process.env.NEXT_PUBLIC_API_BASE}graphql`
+const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
+
+export interface IFetchQL {
   variables?:{
     [key:string]: any
   }
   context?:{
     [key:string]: any
-  },
+  }
+  getClient?: Function
 }
 
-function getURI(operation:any) {
-  return operation.getContext().uri || `${process.env.NEXT_PUBLIC_API_BASE}graphql`;
- }
+export interface IMakeApolloClient {
+  uri?: string
+  context?: any,
+  isRSC?: boolean
+  revalidate?: number,
+  memoryCacheOptions?: {[key:string]:any}
+  middlewares?: ApolloLink[]
+}
 
-export function makeApolloClient(
-  args?:{
-    context?: any,
-    memoryCacheOptions?: {[key:string]:any}
-    middlewares?: ApolloLink[]
-  }
-){
 
-  const { context, memoryCacheOptions, middlewares } = args ?? {}
+export function makeApolloClient(args?:IMakeApolloClient){
+
+  const { uri, context, isRSC, memoryCacheOptions, middlewares } = args ?? {}
 
   const httpLink = new HttpLink({
-    uri: getURI,
+    uri
   })
 
-  const headerMiddleware = setContext((operation, prevContext) => {
+  const middleware = setContext((operation, prevContext) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
       fetchOptions: {
+        ...(context?.fetchOptions || {}),
         next: {
-          revalidate: context?.revalidate || 60
+          revalidate: context?.revalidate || REVALIDATE
         },
       },
+      ...context,
       headers: {
         ...prevHeaders,
         ...(context?.headers ?? {})
@@ -47,50 +53,63 @@ export function makeApolloClient(
     }
   })
 
-  if( typeof window === "undefined" ){
-    return new ApolloClient({
-      // cache: new NextSSRInMemoryCache({
-      //   typePolicies: {
-      //     ZipDTO: {
-      //       keyFields: ['name', 'latitude', 'longitude'],
-      //     },
-      //   },
-      // }),
-      cache: new InMemoryCache(memoryCacheOptions || {}),
-      link: ApolloLink.from([
+  // server side fetch
+  if( isRSC ){
+    const { getClient } = registerApolloClient(() => {
+      return new ApolloClient({
+        cache: new InMemoryCache(memoryCacheOptions || {}),
+        link: ApolloLink.from([
+          middleware,
+          ...(middlewares || []),
+          httpLink,
+        ])
+      })
+    })
+
+    return {
+      getClient
+    }
+  }
+
+  // client side
+  const getClient = ()=> new NextSSRApolloClient({
+    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
+    link: typeof window === "undefined"
+      ? ApolloLink.from([
         new SSRMultipartLink({
           stripDefer: true,
         }),
-        headerMiddleware,
+        middleware,
         ...(middlewares || []),
         httpLink,
       ])
-    })
-  }else{
-    return new NextSSRApolloClient({
-      // cache: new NextSSRInMemoryCache({
-      //   typePolicies: {
-      //     ZipDTO: {
-      //       keyFields: ['name', 'latitude', 'longitude'],
-      //     },
-      //   },
-      // }),
-      cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-      link: ApolloLink.from([
-          headerMiddleware,
-          ...(middlewares || []),
-          httpLink
-        ])
-    })
+      : ApolloLink.from([
+        middleware,
+        ...(middlewares || []),
+        httpLink,
+      ])
+  })
+
+  return {
+    getClient,
   }
 }
 
-export const { getClient } = registerApolloClient(()=>makeApolloClient())
+export const fetchGQL = async function(query:TypedDocumentNode, args:IFetchQL){
 
-export const fetchGQL = async function(query:TypedDocumentNode, args:TypeFetchQLArgs){
   const { variables:passedVariables, context:passedContext } = args ?? { variables:{}, context:{} }
   const context = passedContext || {}
   const variables = passedVariables || {}
+  let getClient = args?.getClient
+
+  if( typeof getClient !== 'function' ){
+    getClient = makeApolloClient({
+      uri: API_URL,
+      isRSC: true,
+      context,
+    }).getClient
+  }
+
   const result = await getClient().query({
     query,
     variables,

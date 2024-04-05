@@ -54,75 +54,79 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { ApolloLink, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink } from "@apollo/experimental-nextjs-app-support/ssr";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-function getURI(operation) {
-    return operation.getContext().uri || "".concat(process.env.NEXT_PUBLIC_API_BASE, "graphql");
-}
+var API_URL = "".concat(process.env.NEXT_PUBLIC_API_BASE, "graphql");
+var REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60);
 export function makeApolloClient(args) {
-    var _a = args !== null && args !== void 0 ? args : {}, context = _a.context, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
+    var _a = args !== null && args !== void 0 ? args : {}, uri = _a.uri, context = _a.context, isRSC = _a.isRSC, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
     var httpLink = new HttpLink({
-        uri: getURI,
+        uri: uri
     });
-    var headerMiddleware = setContext(function (operation, prevContext) {
+    var middleware = setContext(function (operation, prevContext) {
         var _a;
         var prevHeaders = prevContext.headers;
-        return __assign(__assign({}, prevContext), { fetchOptions: {
-                next: {
-                    revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || 60
-                },
-            }, headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
+        return __assign(__assign(__assign(__assign({}, prevContext), { fetchOptions: __assign(__assign({}, ((context === null || context === void 0 ? void 0 : context.fetchOptions) || {})), { next: {
+                    revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || REVALIDATE
+                } }) }), context), { headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
     });
-    if (typeof window === "undefined") {
-        return new ApolloClient({
-            // cache: new NextSSRInMemoryCache({
-            //   typePolicies: {
-            //     ZipDTO: {
-            //       keyFields: ['name', 'latitude', 'longitude'],
-            //     },
-            //   },
-            // }),
-            cache: new InMemoryCache(memoryCacheOptions || {}),
-            link: ApolloLink.from(__spreadArray(__spreadArray([
+    // server side fetch
+    if (isRSC) {
+        var getClient_1 = registerApolloClient(function () {
+            return new ApolloClient({
+                cache: new InMemoryCache(memoryCacheOptions || {}),
+                link: ApolloLink.from(__spreadArray(__spreadArray([
+                    middleware
+                ], (middlewares || []), true), [
+                    httpLink,
+                ], false))
+            });
+        }).getClient;
+        return {
+            getClient: getClient_1
+        };
+    }
+    // client side
+    var getClient = function () { return new NextSSRApolloClient({
+        cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
+        link: typeof window === "undefined"
+            ? ApolloLink.from(__spreadArray(__spreadArray([
                 new SSRMultipartLink({
                     stripDefer: true,
                 }),
-                headerMiddleware
+                middleware
             ], (middlewares || []), true), [
                 httpLink,
             ], false))
-        });
-    }
-    else {
-        return new NextSSRApolloClient({
-            // cache: new NextSSRInMemoryCache({
-            //   typePolicies: {
-            //     ZipDTO: {
-            //       keyFields: ['name', 'latitude', 'longitude'],
-            //     },
-            //   },
-            // }),
-            cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-            link: ApolloLink.from(__spreadArray(__spreadArray([
-                headerMiddleware
+            : ApolloLink.from(__spreadArray(__spreadArray([
+                middleware
             ], (middlewares || []), true), [
-                httpLink
+                httpLink,
             ], false))
-        });
-    }
+    }); };
+    return {
+        getClient: getClient,
+    };
 }
-export var getClient = registerApolloClient(function () { return makeApolloClient(); }).getClient;
 export var fetchGQL = function (query, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, passedVariables, passedContext, context, variables, result;
+        var _a, passedVariables, passedContext, context, variables, getClient, result;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _a = args !== null && args !== void 0 ? args : { variables: {}, context: {} }, passedVariables = _a.variables, passedContext = _a.context;
                     context = passedContext || {};
                     variables = passedVariables || {};
+                    getClient = args === null || args === void 0 ? void 0 : args.getClient;
+                    if (typeof getClient !== 'function') {
+                        getClient = makeApolloClient({
+                            uri: API_URL,
+                            isRSC: true,
+                            context: context,
+                        }).getClient;
+                    }
                     return [4 /*yield*/, getClient().query({
                             query: query,
                             variables: variables,
