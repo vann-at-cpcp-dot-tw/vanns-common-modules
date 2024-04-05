@@ -47,7 +47,7 @@ export function makeApolloClient(args?:{
     //     },
     //   },
     // }),
-    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
+    cache: new NextSSRInMemoryCache(),
     link: typeof window === "undefined"
       ? ApolloLink.from([
         new SSRMultipartLink({
