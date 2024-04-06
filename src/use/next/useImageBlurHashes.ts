@@ -1,7 +1,7 @@
 import { genImageBlurHash } from "~/lib/next/genImageBlurHash"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 
-export default function useImageBlurHashes(imgUrlList:(string | undefined)[], args?:{w?:number, q?:number}){
+export function useImageBlurHashes(imgUrlList:(string | undefined)[], args?:{w?:number, q?:number}){
   const [imageBlurHashes, setImageBlurHashes] = useState<string[]>([])
   const {w=16, q=75} = args ?? {}
 

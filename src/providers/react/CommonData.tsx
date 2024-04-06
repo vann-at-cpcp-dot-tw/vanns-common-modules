@@ -4,7 +4,8 @@ export interface CommonDataContextType {
   [key: string]: any
 }
 export const CommonDataContext = createContext<CommonDataContextType>({})
-export default function CommonDataProvider({
+
+export function CommonDataProvider({
   children,
   commonData
 }:{

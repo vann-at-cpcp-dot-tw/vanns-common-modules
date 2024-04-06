@@ -6,7 +6,7 @@ interface TypeState {
   node: HTMLDivElement | null
 }
 
-export default function useDomNodeSize(){
+export function useDomNodeSize(){
 
   const [state, setState] = useState<TypeState>({
     width: 0,

@@ -1,7 +1,7 @@
-import useWindowSize from "~/use/react/useWindowSize"
+import { useWindowSize } from "~/use/react"
 import { useEffect, useState } from "react"
 
-export default function useIsClient(){
+export function useIsClient(){
   const viewport = useWindowSize()
   const [isClient, setIsClient] = useState(false)
 

@@ -4,7 +4,7 @@ import {  ReactNode, createContext } from 'react'
 
 export const ScopeStoreContext = createContext<{[key:string]:any}>({})
 
-export default function ScopeStoreProvider({
+export function ScopeStoreProvider({
   children,
   state
 }:{

@@ -1,7 +1,9 @@
 "use client"
 import { QueryClient, QueryClientProvider } from 'react-query'
+
 import { ReactNode, useState } from "react"
-export default function ReactQueryClientProvider({
+
+export function ReactQueryClientProvider({
   children
 }:{
   children: ReactNode,

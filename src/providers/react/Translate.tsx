@@ -1,7 +1,9 @@
 "use client"
 import {  ReactNode, createContext } from 'react'
+
 export const TranslateContext = createContext<{[key:string]:string}>({})
-export default function TranslateProvider({
+
+export function TranslateProvider({
   children,
   translation
 }:{

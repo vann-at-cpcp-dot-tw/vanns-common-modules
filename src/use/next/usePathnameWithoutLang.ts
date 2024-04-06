@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useParams, usePathname } from "next/navigation"
 
-export default function usePathnameWithoutLang(){
+export function usePathnameWithoutLang(){
   const { lang } = useParams()
   const pathname = usePathname()
   const pathnameWithoutLang = useMemo(()=>{

@@ -1,8 +1,8 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 import queryString from "query-string"
 
-export default function useSearchObject(){
+export function useSearchObject(){
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

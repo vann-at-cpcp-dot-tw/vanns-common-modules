@@ -10,7 +10,7 @@ type IParamNode = {
   style?: Record<string, string>
  }
 
-export default function useTranslate(){
+export function useTranslate(){
   const translationDoc = useContext(TranslateContext)
 
   const __ = useCallback((sourceString:string, params?:(IParamNode | string | number)[])=>{
