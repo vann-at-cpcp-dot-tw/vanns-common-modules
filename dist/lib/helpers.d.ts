@@ -16,7 +16,7 @@ interface INumberWithKMBArgs {
         locale?: string;
     };
 }
-export declare const numberWithKMB: (num: number, args: INumberWithKMBArgs) => string;
+export declare const numberWithKMB: (num: any, args: INumberWithKMBArgs) => string;
 export declare const roundDecimal: (val: number, digits?: number) => number;
 export declare const rand: (min: number, max: number) => number;
 export declare const arrayGenerate: (start: number, end: number, step?: number) => number[];

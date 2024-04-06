@@ -47,7 +47,7 @@ export var shareLinkedin = function (url) {
 export var numberFormat = function (num, options) {
     if (options === void 0) { options = {}; }
     if (typeof num !== 'number') {
-        console.error("numberFormat's type error");
+        console.error("numberFormat type error");
         return '';
     }
     if (isNaN(num)) {
@@ -75,6 +75,14 @@ export var numberWithKMB = function (num, args) {
         if (calcNum >= si[i].value) {
             break;
         }
+    }
+    if (typeof num !== 'number') {
+        console.error("numberWithKMB type error");
+        return '';
+    }
+    if (isNaN(num)) {
+        console.error('numberWithKMB passed NaN');
+        return '';
     }
     return "".concat(numberFormat(parseFloat(String(num / si[i].value)), formatterOptions)).concat(si[i].symbol);
 };

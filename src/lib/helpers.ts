@@ -56,7 +56,7 @@ export const shareLinkedin = function(url:string){
 export const numberFormat = function(num:any, options:Intl.NumberFormatOptions & {locale?:string} = {}){
 
   if( typeof num !== 'number' ){
-    console.error("numberFormat's type error")
+    console.error("numberFormat type error")
     return ''
   }
 
@@ -79,7 +79,7 @@ interface INumberWithKMBArgs {
   formatterOptions?: Intl.NumberFormatOptions & {locale?:string}
 }
 
-export const numberWithKMB = function(num:number, args:INumberWithKMBArgs) {
+export const numberWithKMB = function(num:any, args:INumberWithKMBArgs) {
 
   const si = args.si || [
     { value: 1, symbol: '' },
@@ -93,7 +93,6 @@ export const numberWithKMB = function(num:number, args:INumberWithKMBArgs) {
   ]
 
   const formatterOptions = args.formatterOptions || {}
-
   const calcNum = num < 0 ? num * -1 : num;
   let i;
   for (i = si.length - 1; i > 0; i--) {
@@ -102,7 +101,17 @@ export const numberWithKMB = function(num:number, args:INumberWithKMBArgs) {
     }
   }
 
-  return `${numberFormat(parseFloat(String(num / si[i].value)), formatterOptions)}${si[i].symbol}`;
+  if( typeof num !== 'number' ){
+    console.error("numberWithKMB type error")
+    return ''
+  }
+
+  if( isNaN(num) ){
+    console.error('numberWithKMB passed NaN')
+    return ''
+  }
+
+  return `${numberFormat(parseFloat(String(num / si[i].value)), formatterOptions)}${si[i].symbol}`
 }
 
 
