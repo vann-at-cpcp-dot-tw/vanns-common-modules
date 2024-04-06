@@ -53,7 +53,11 @@ export const shareLinkedin = function(url:string){
 }
 
 
-export const numberFormat = function(num:number, options:Intl.NumberFormatOptions & {locale?:string} = {}){
+export const numberFormat = function(num:number|null|undefined, options:Intl.NumberFormatOptions & {locale?:string} = {}){
+  if( typeof num !== 'number' ){
+    return ''
+  }
+
   const formatter = new Intl.NumberFormat(options?.locale || 'en-US', options)
   return formatter.format(num)
 }

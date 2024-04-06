@@ -46,6 +46,9 @@ export var shareLinkedin = function (url) {
 };
 export var numberFormat = function (num, options) {
     if (options === void 0) { options = {}; }
+    if (typeof num !== 'number') {
+        return '';
+    }
     var formatter = new Intl.NumberFormat((options === null || options === void 0 ? void 0 : options.locale) || 'en-US', options);
     return formatter.format(num);
 };
