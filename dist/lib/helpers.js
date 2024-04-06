@@ -44,39 +44,36 @@ export var shareTwitter = function (url, title) {
 export var shareLinkedin = function (url) {
     window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url);
 };
-export var numberWithCommas = function (x, digits) {
-    if (digits === void 0) { digits = 0; }
-    var size = Math.pow(10, digits);
-    x = Math.round(x * size) / size;
-    if (digits !== 0) {
-        if (String(x).split('.').length === 1) { // 整數
-            x = Number.parseFloat(x).toFixed(2);
-        }
-    }
-    return isNaN(parseInt(x)) ? '0' : x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+export var numberFormat = function (num, options) {
+    if (options === void 0) { options = {}; }
+    var formatter = new Intl.NumberFormat((options === null || options === void 0 ? void 0 : options.locale) || 'en-US', options);
+    return formatter.format(num);
 };
-export var numberWithKMB = function (num, digits) {
-    var calcNum = num < 0 ? num * -1 : num;
-    var si = [
+export var numberWithKMB = function (num, args) {
+    var si = args.si || [
         { value: 1, symbol: '' },
         { value: 1E3, symbol: 'K' },
         { value: 1E6, symbol: 'M' },
         { value: 1E9, symbol: 'B' },
+        // 中文可複寫 si:
+        //  { value: 1, symbol: '' },
+        //  { value: 10000, symbol: '萬' },
+        //  { value: 100000000, symbol: '億' },
     ];
-    var rx = /$[0-9]+$/;
+    var formatterOptions = args.formatterOptions || {};
+    var calcNum = num < 0 ? num * -1 : num;
     var i;
     for (i = si.length - 1; i > 0; i--) {
         if (calcNum >= si[i].value) {
             break;
         }
     }
-    num = num / si[i].value;
-    return parseFloat(num).toFixed(digits) + si[i].symbol;
+    return "".concat(numberFormat(parseFloat(String(num / si[i].value)), formatterOptions)).concat(si[i].symbol);
 };
 // 帶小數的四捨五入，第一參數：整數或浮點數，第二參數：小數位數
-export var roundDecimal = function (val, precision) {
-    if (precision === void 0) { precision = 0; }
-    return Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) / Math.pow(10, (precision || 0));
+export var roundDecimal = function (val, digits) {
+    if (digits === void 0) { digits = 0; }
+    return Math.round(Math.round(val * Math.pow(10, (digits || 0) + 1)) / 10) / Math.pow(10, (digits || 0));
 };
 // 取隨機數
 export var rand = function (min, max) {
@@ -99,17 +96,17 @@ export var arrayShuffle = function (a) {
 // 產生一組不重複隨機數，需要打亂陣列和創建陣列
 export var arrayRandom = function (_a) {
     var _b = _a === void 0 ? { min: 0, max: 2, length: 2, step: 1 } : _a, _c = _b.min, min = _c === void 0 ? 0 : _c, _d = _b.max, max = _d === void 0 ? 2 : _d, _e = _b.length, length = _e === void 0 ? 2 : _e, _f = _b.step, step = _f === void 0 ? 1 : _f;
-    var arry = this.arrayGenerate(min, max, step);
-    this.arrayShuffle(arry);
-    return arry.slice(0, length);
+    var array = arrayGenerate(min, max, step);
+    arrayShuffle(array);
+    return array.slice(0, length);
 };
 // array chunk
-export var arrayChunk = function (myArray, chunk_size) {
+export var arrayChunk = function (myArray, chunkSize) {
     var index = 0;
     var arrayLength = myArray.length;
     var tempArray = [];
-    for (index = 0; index < arrayLength; index += chunk_size) {
-        var myChunk = myArray.slice(index, index + chunk_size);
+    for (index = 0; index < arrayLength; index += chunkSize) {
+        var myChunk = myArray.slice(index, index + chunkSize);
         // Do something if you want with the group
         tempArray.push(myChunk);
     }
@@ -117,18 +114,17 @@ export var arrayChunk = function (myArray, chunk_size) {
 };
 // 取得小數點位數
 export var getDecimalPlace = function (num) {
-    if (num !== undefined && !isNaN(num)) {
-        var sep = String(23.32).match(/\D/)[0];
-        var b = String(num).split(sep);
-        return b[1] ? b[1].length : 0;
-    }
+    var numStr = num.toString();
+    var decimalIndex = numStr.indexOf('.');
+    return decimalIndex !== -1 ? numStr.length - decimalIndex - 1 : 0;
 };
 // 滾動到特定 el
 export var scrollToSection = function (_a) {
-    var el = _a.el, _b = _a.speed, speed = _b === void 0 ? 800 : _b, _c = _a.offset, offset = _c === void 0 ? 0 : _c, _d = _a.callback, callback = _d === void 0 ? function () { } : _d;
+    var _b, _c, _d, _e, _f;
+    var el = _a.el, _g = _a.speed, speed = _g === void 0 ? 800 : _g, _h = _a.offset, offset = _h === void 0 ? 0 : _h;
     if (el) {
         window.scrollTo({
-            top: el.offsetTop - document.body.style.paddingTop.split('px')[0] + offset,
+            top: el.offsetTop - Number((((_f = (_e = (_d = (_c = (_b = document === null || document === void 0 ? void 0 : document.body) === null || _b === void 0 ? void 0 : _b.style) === null || _c === void 0 ? void 0 : _c.paddingTop) === null || _d === void 0 ? void 0 : _d.split) === null || _e === void 0 ? void 0 : _e.call(_d, 'px')) === null || _f === void 0 ? void 0 : _f[0]) || 0)) + offset,
             behavior: 'smooth'
         });
     }
@@ -150,6 +146,7 @@ export var getItemPositionInViewport = function (_a) {
 };
 // 補 0
 export var padLeft = function (n, width, z) {
+    if (z === void 0) { z = '0'; }
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
@@ -189,21 +186,6 @@ export var toCamelCase = function (str, breakKey, upperCamelCase) {
     }
     return str;
 };
-export var convertYoutubeUrlToEmbed = function (input) {
-    var youtubeID;
-    if (input.includes('/embed/')) {
-        return input;
-    }
-    if (input.includes('https://youtu.be/')) {
-        youtubeID = input.replace('https://youtu.be/', '').split('?si')[0];
-    }
-    else if (input.includes('https://www.youtube.com/watch?v=')) {
-        youtubeID = input.replace('https://www.youtube.com/watch?v=', '').split('&')[0];
-    }
-    if (youtubeID) {
-        return "https://www.youtube.com/embed/".concat(youtubeID);
-    }
-};
 export var calcSizeByRatio = function (_a) {
     var w = _a.w, h = _a.h, ratio = _a.ratio;
     // 輸入寬(或高) + 比例, return 符合比例的寬高值
@@ -214,13 +196,13 @@ export var calcSizeByRatio = function (_a) {
     if (typeof ratio !== 'number' || ratio <= 0) {
         throw new Error("The ratio must be a positive number.");
     }
-    if (w > 0) {
+    if (typeof w === 'number' && w > 0) {
         return {
             w: w,
             h: Math.round(w / ratio)
         };
     }
-    if (h > 0) {
+    if (typeof h === 'number' && h > 0) {
         return {
             w: Math.round(h * ratio),
             h: h
