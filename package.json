@@ -4,10 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "exports": {
-    "./config/*": "./dist/config/*",
-    "./lib/*": "./dist/lib/*",
-    "./providers/*": "./dist/providers/*",
-    "./use/*": "./dist/use/*"
+    "./*": "./dist/*.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
