@@ -53,8 +53,15 @@ export const shareLinkedin = function(url:string){
 }
 
 
-export const numberFormat = function(num:number|null|undefined, options:Intl.NumberFormatOptions & {locale?:string} = {}){
+export const numberFormat = function(num:any, options:Intl.NumberFormatOptions & {locale?:string} = {}){
+
   if( typeof num !== 'number' ){
+    console.error("numberFormat's type error")
+    return ''
+  }
+
+  if( isNaN(num) ){
+    console.error('numberFormat passed NaN')
     return ''
   }
 

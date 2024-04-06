@@ -47,6 +47,11 @@ export var shareLinkedin = function (url) {
 export var numberFormat = function (num, options) {
     if (options === void 0) { options = {}; }
     if (typeof num !== 'number') {
+        console.error("numberFormat's type error");
+        return '';
+    }
+    if (isNaN(num)) {
+        console.error('numberFormat passed NaN');
         return '';
     }
     var formatter = new Intl.NumberFormat((options === null || options === void 0 ? void 0 : options.locale) || 'en-US', options);
