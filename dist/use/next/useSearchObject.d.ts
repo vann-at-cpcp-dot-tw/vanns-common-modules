@@ -1,5 +1,5 @@
 import queryString from "query-string";
-export default function useSearchObject(): {
+export declare function useSearchObject(): {
     searchParams: import("next/navigation").ReadonlyURLSearchParams;
     searchObject: queryString.ParsedQuery<string | number>;
     searchString: string;

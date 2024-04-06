@@ -12,7 +12,7 @@ var __assign = (this && this.__assign) || function () {
 import { useCallback, useMemo } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import queryString from "query-string";
-export default function useSearchObject() {
+export function useSearchObject() {
     var router = useRouter();
     var pathname = usePathname();
     var searchParams = useSearchParams();

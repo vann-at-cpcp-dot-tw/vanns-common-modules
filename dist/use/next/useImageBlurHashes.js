@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { genImageBlurHash } from "../../lib/next/genImageBlurHash";
 import { useState, useEffect } from "react";
-export default function useImageBlurHashes(imgUrlList, args) {
+export function useImageBlurHashes(imgUrlList, args) {
     var _this = this;
     var _a = useState([]), imageBlurHashes = _a[0], setImageBlurHashes = _a[1];
     var _b = args !== null && args !== void 0 ? args : {}, _c = _b.w, w = _c === void 0 ? 16 : _c, _d = _b.q, q = _d === void 0 ? 75 : _d;

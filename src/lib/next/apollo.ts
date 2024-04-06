@@ -25,7 +25,6 @@ export interface IMakeApolloClient {
   middlewares?: ApolloLink[];
 }
 
-
 export function makeApolloClient(args?:IMakeApolloClient){
 
   const { uri, context, isRSC, memoryCacheOptions, middlewares } = args ?? {}

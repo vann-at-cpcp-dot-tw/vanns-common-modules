@@ -1,1 +1,1 @@
-export default function useIsClient(): boolean;
+export declare function useIsClient(): boolean;

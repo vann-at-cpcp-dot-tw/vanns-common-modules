@@ -3,7 +3,7 @@ interface TypeState {
     height: number;
     node: HTMLDivElement | null;
 }
-export default function useDomNodeSize(): {
+export declare function useDomNodeSize(): {
     size: TypeState;
     setNode: (refNode: HTMLDivElement) => void;
 };

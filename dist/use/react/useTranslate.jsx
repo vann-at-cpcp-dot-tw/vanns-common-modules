@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import { isEmpty } from "../../lib/helpers";
 import { TranslateContext } from "../../providers/react/Translate";
-export default function useTranslate() {
+export function useTranslate() {
     var translationDoc = useContext(TranslateContext);
     var __ = useCallback(function (sourceString, params) {
         if (typeof sourceString !== 'string' && typeof sourceString !== 'number') {

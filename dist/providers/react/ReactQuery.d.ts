@@ -1,4 +1,4 @@
 import { ReactNode } from "react";
-export default function ReactQueryClientProvider({ children }: {
+export declare function ReactQueryClientProvider({ children }: {
     children: ReactNode;
 }): import("react").JSX.Element;

@@ -1,1 +1,1 @@
-export default function usePathnameWithoutLang(): string;
+export declare function usePathnameWithoutLang(): string;

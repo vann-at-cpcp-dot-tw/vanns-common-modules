@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import usePathnameWithoutLang from "../../use/next/usePathnameWithoutLang";
+import { usePathnameWithoutLang } from "../../use/next";
 import { i18n } from "../../config/next/i18n.config";
 export var pathWithLang = function (path, lang) {
     if (lang === i18n.defaultLocale.shortCode) {
@@ -23,7 +23,7 @@ export var isSupportedLang = function (shortCode) {
     var target = i18n.locales.find(function (node) { return node.shortCode === shortCode; });
     return target ? true : false;
 };
-export default function useLangGuard() {
+export function useLangGuard() {
     var params = useParams();
     var router = useRouter();
     var pathname = usePathnameWithoutLang();

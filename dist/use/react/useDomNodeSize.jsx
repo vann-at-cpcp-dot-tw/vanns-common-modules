@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-export default function useDomNodeSize() {
+export function useDomNodeSize() {
     var _a = useState({
         width: 0,
         height: 0,

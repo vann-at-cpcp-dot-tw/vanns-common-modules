@@ -3,7 +3,7 @@ type IParamNode = {
     className?: string;
     style?: Record<string, string>;
 };
-export default function useTranslate(): {
+export declare function useTranslate(): {
     __: (sourceString: string, params?: (IParamNode | string | number)[]) => string | undefined;
 };
 export {};
