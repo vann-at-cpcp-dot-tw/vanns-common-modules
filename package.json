@@ -4,7 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "exports": {
-    "./*": "./dist/*.js"
+    "./lib/*": "./dist/lib/*",
+    "./lib/next/*": "./dist/lib/next/*",
+    "./providers/next/*": "./dist/providers/next/*",
+    "./use/next/*": "./dist/use/next/*",
+    "./use/react/*": "./dist/use/react/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
