@@ -6,7 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
@@ -17,7 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
+    "incremental": false,
     "noImplicitAny": true,
     "paths": {
       "~/*": ["./src/*"],
@@ -30,6 +29,11 @@
     "outDir": "./",
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/config/**/*",
+    "src/**/__*.ts",
+    "src/**/__*.tsx"
+  ]
 }
 

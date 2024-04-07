@@ -9,7 +9,6 @@ const defaultStore = {
 }
 
 export const createStore = (initStore:IStore)=>{
-
   const useStore = create<IStore>((set, get)=>({
     ...defaultStore,
     ...(initStore || {}),
@@ -53,3 +52,4 @@ export const createStore = (initStore:IStore)=>{
     useStore
   }
 }
+
