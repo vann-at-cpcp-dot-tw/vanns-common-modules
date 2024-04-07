@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { genImageBlurHash } from "../../lib/next/genImageBlurHash";
+import { genImageBlurHash } from "~/lib/next/genImageBlurHash";
 import { useState, useEffect } from "react";
 export function useImageBlurHashes(imgUrlList, args) {
     var _this = this;
