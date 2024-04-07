@@ -1,4 +1,4 @@
-import { useWindowSize } from "../../src/use/react";
+import { useWindowSize } from "../../use/react";
 import { useEffect, useState } from "react";
 export function useIsClient() {
     var viewport = useWindowSize();

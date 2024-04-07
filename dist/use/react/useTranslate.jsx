@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
-import { isEmpty } from "~/lib/helpers";
-import { TranslateContext } from "~/providers/react/Translate";
+import { isEmpty } from "../../lib/helpers";
+import { TranslateContext } from "../../providers/react/Translate";
 export function useTranslate() {
     var translationDoc = useContext(TranslateContext);
     var __ = useCallback(function (sourceString, params) {
