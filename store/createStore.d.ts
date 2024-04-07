@@ -1,10 +1,7 @@
-interface TypeStore {
-    lightbox: string[];
+interface IStore {
     [key: string]: any;
 }
-export declare const createStore: (initStore: {
-    [key: string]: any;
-}) => {
-    useStore: import("zustand").UseBoundStore<import("zustand").StoreApi<TypeStore>>;
+export declare const createStore: (initStore: IStore) => {
+    useStore: import("zustand").UseBoundStore<import("zustand").StoreApi<IStore>>;
 };
 export {};

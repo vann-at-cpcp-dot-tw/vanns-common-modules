@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
-interface TypeStore {
-  lightbox: string[]
+interface IStore {
   [key:string]: any
 }
 
@@ -9,12 +8,13 @@ const defaultStore = {
   lightbox: []
 }
 
-export const createStore = (initStore:{[key:string]:any})=>{
-  const useStore = create<TypeStore>((set, get)=>({
+export const createStore = (initStore:IStore)=>{
+
+  const useStore = create<IStore>((set, get)=>({
     ...defaultStore,
     ...(initStore || {}),
     set: (updateState={})=>{
-      return set((state:TypeStore)=>{
+      return set((state:IStore)=>{
         return {
           ...state,
           ...updateState
@@ -25,7 +25,7 @@ export const createStore = (initStore:{[key:string]:any})=>{
       if( !actionId ){
         return null
       }
-      return set((state:TypeStore)=>{
+      return set((state:IStore)=>{
         return {
           lightbox: [...state.lightbox, actionId]
         }
@@ -33,13 +33,13 @@ export const createStore = (initStore:{[key:string]:any})=>{
     },
     lightboxClose: (actionId:string)=>{
       if( !actionId ){
-        return set((state:TypeStore)=>{
+        return set((state:IStore)=>{
           return {
             lightbox: []
           }
         })
       }
-      return set((state:TypeStore)=>{
+      return set((state:IStore)=>{
         return {
           lightbox: state.lightbox?.filter((id:string)=>{
             return id !== actionId
@@ -48,6 +48,7 @@ export const createStore = (initStore:{[key:string]:any})=>{
       })
     }
   }))
+
   return {
     useStore
   }
