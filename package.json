@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "clean" : "rimraf config lib providers use && rimraf tsconfig.tsbuildinfo",
+    "clean": "rimraf components config lib providers store styles use && rimraf tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc && tsc-alias"
   },
   "keywords": [],
@@ -22,7 +22,8 @@
     "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-query": "^3.39.3",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
