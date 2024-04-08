@@ -3,7 +3,13 @@
 import { useCallback, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "./usePathnameWithoutLang"
-const i18n = require(process.env.NEXT_PUBLIC_I18N_CONFIG_PATH || '')
+
+const path = require('path')
+const projectRoot = path.resolve(__dirname, '../../')
+const i18nFilePath = path.join(projectRoot, 'i18n.config')
+console.log(222, i18nFilePath)
+const i18n = require(i18nFilePath)
+// import { i18n } from "../../i18n.config"
 
 export const pathWithLang = function(path:string, lang:string){
   if( lang === i18n.defaultLocale.shortCode ){
@@ -16,16 +22,16 @@ export const convertLocaleCode = function(lang:string, to:string){
   let target
   switch(to){
     case 'short':
-      target = i18n.locales.find((node:any)=>node.code === lang)
+      target = i18n.locales.find((node)=>node.code === lang)
       return target?.shortCode || i18n.defaultLocale.shortCode
     case 'long':
-      target = i18n.locales.find((node:any)=>node.shortCode === lang)
+      target = i18n.locales.find((node)=>node.shortCode === lang)
       return target?.code || i18n.defaultLocale.code
   }
 }
 
 export const isSupportedLang = function(shortCode:string){
-  const target = i18n.locales.find((node:any)=>node.shortCode === shortCode)
+  const target = i18n.locales.find((node)=>node.shortCode === shortCode)
   return target ?true :false
 }
 
