@@ -2,25 +2,27 @@
 
 import Link from "next/link"
 import { useParams } from "next/navigation"
-const i18n = require(process.env.NEXT_PUBLIC_I18N_CONFIG_PATH || '')
 
 interface TypeProps {
+  defaultLang: string // pass short code, eg: zh, en...
   href?: string
-  lang: string | string[]
+  lang?: string | string[]
   children: React.ReactNode
   [key:string]: any
 }
 
 function LinkWithLang(props:TypeProps, ref:React.ReactNode){
-  const { href, lang:propsLang, ...restProps } = props
+  const { href, lang:propsLang, defaultLang, ...restProps } = props
   if( !href ){
     return <span {...restProps}>{}</span>
   }
+
   const params = useParams()
   const currentLang = params.lang
   const redirectTargetLang = propsLang || currentLang
-  const isDefaultLang = redirectTargetLang === i18n.defaultLocale.shortCode
+  const isDefaultLang = redirectTargetLang === defaultLang
   const path = isDefaultLang ?href :`/${redirectTargetLang}${href}`
+
   return <Link href={path} {...restProps}>{}</Link>
 }
 

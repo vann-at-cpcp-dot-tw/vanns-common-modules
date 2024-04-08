@@ -16,4 +16,5 @@ export const i18n = {
   locales
 } as const
 
+export type TypeI18n = typeof i18n
 export type Locale = (typeof i18n)['locales'][number]

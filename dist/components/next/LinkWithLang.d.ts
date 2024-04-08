@@ -1,7 +1,8 @@
 /// <reference types="react" />
 interface TypeProps {
+    defaultLang: string;
     href?: string;
-    lang: string | string[];
+    lang?: string | string[];
     children: React.ReactNode;
     [key: string]: any;
 }

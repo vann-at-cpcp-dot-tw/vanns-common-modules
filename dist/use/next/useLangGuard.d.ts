@@ -1,7 +1,10 @@
-export declare const pathWithLang: (path: string, lang: string) => string;
-export declare const convertLocaleCode: (lang: string, to: string) => any;
-export declare const isSupportedLang: (shortCode: string) => boolean;
-export declare function useLangGuard(): {
+import { TypeI18n } from "../../config/next/i18n.config";
+export declare const tools: (i18nConfig: TypeI18n) => {
+    pathWithLang: (path: string, lang: string) => string;
+    convertLocaleCode: (lang: string, to: string) => string | undefined;
+    isSupportedLang: (shortCode: string) => boolean;
+};
+export declare function useLangGuard(i18nConfig: TypeI18n): {
     lang: string | string[];
-    localeCode: any;
+    localeCode: string | undefined;
 };

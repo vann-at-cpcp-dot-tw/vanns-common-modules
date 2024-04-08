@@ -12,16 +12,15 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import Link from "next/link";
 import { useParams } from "next/navigation";
-var i18n = require(process.env.NEXT_PUBLIC_I18N_CONFIG_PATH || '');
 function LinkWithLang(props, ref) {
-    var href = props.href, propsLang = props.lang, restProps = __rest(props, ["href", "lang"]);
+    var href = props.href, propsLang = props.lang, defaultLang = props.defaultLang, restProps = __rest(props, ["href", "lang", "defaultLang"]);
     if (!href) {
         return <span {...restProps}></span>;
     }
     var params = useParams();
     var currentLang = params.lang;
     var redirectTargetLang = propsLang || currentLang;
-    var isDefaultLang = redirectTargetLang === i18n.defaultLocale.shortCode;
+    var isDefaultLang = redirectTargetLang === defaultLang;
     var path = isDefaultLang ? href : "/".concat(redirectTargetLang).concat(href);
     return <Link href={path} {...restProps}></Link>;
 }
