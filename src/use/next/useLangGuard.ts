@@ -31,10 +31,6 @@ export const tools = function(i18nConfig:TypeI18n){
   }
 }
 
-
-
-
-
 export function useLangGuard(i18nConfig:TypeI18n){
 
   const params = useParams()
