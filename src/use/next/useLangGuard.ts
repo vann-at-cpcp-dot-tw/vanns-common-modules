@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "./usePathnameWithoutLang"
 import { TypeI18n } from "~/config/next/i18n.config"
 
-export const tools = function(i18nConfig:TypeI18n){
+export function tools(i18nConfig:TypeI18n){
   return {
     pathWithLang: (path:string, lang:string)=>{
       if( lang === i18nConfig.defaultLocale.shortCode ){

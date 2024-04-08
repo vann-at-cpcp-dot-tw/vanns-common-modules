@@ -2,7 +2,7 @@
 import { useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { usePathnameWithoutLang } from "./usePathnameWithoutLang";
-export var tools = function (i18nConfig) {
+export function tools(i18nConfig) {
     return {
         pathWithLang: function (path, lang) {
             if (lang === i18nConfig.defaultLocale.shortCode) {
@@ -26,7 +26,7 @@ export var tools = function (i18nConfig) {
             return target ? true : false;
         }
     };
-};
+}
 export function useLangGuard(i18nConfig) {
     var params = useParams();
     var router = useRouter();

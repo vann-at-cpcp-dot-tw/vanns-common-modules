@@ -1,5 +1,5 @@
 import { TypeI18n } from "../../config/next/i18n.config";
-export declare const tools: (i18nConfig: TypeI18n) => {
+export declare function tools(i18nConfig: TypeI18n): {
     pathWithLang: (path: string, lang: string) => string;
     convertLocaleCode: (lang: string, to: string) => string | undefined;
     isSupportedLang: (shortCode: string) => boolean;
