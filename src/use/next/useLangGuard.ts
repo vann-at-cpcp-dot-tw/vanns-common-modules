@@ -3,7 +3,7 @@
 import { useCallback, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "./usePathnameWithoutLang"
-const i18n = require('~~/i18n.config')
+const i18n = require(process.env.I18N_CONFIG_PATH || '')
 
 export const pathWithLang = function(path:string, lang:string){
   if( lang === i18n.defaultLocale.shortCode ){
