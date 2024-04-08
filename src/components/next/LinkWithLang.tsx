@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { i18n } from '~~/i18n.config'
+const i18n = require(process.env.I18N_CONFIG_PATH || '')
 
 interface TypeProps {
   href?: string
