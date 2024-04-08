@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useParams } from "next/navigation"
-const i18n = require(process.env.I18N_CONFIG_PATH || '')
+const i18n = require(process.env.NEXT_PUBLIC_I18N_CONFIG_PATH || '')
 
 interface TypeProps {
   href?: string
