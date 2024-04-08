@@ -1,5 +1,3 @@
-"use client"
-
 import { useCallback, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "./usePathnameWithoutLang"
