@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "clean": "rimraf components config lib providers store styles use && rimraf tsconfig.tsbuildinfo",
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc && tsc-alias"
   },
   "keywords": [],
