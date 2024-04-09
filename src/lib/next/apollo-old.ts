@@ -19,7 +19,7 @@ export interface IFetchGQLArgs {
 export interface IMakeApolloClient {
   uri: string;
   context?: any;
-  isRSC?: boolean;
+  isRSC?: boolean; // is React Server Component
   revalidate?: number;
   memoryCacheOptions?: {[key:string]:any};
   middlewares?: ApolloLink[];
