@@ -12,7 +12,7 @@ interface TypeProps {
   children?: React.ReactNode
 }
 
-function Lightbox(props:TypeProps){
+export default function Lightbox(props:TypeProps){
 
   const store = useStore()
   const innerRef = useRef(null)
@@ -41,5 +41,3 @@ function Lightbox(props:TypeProps){
     }
   </>
 }
-
-export default Lightbox

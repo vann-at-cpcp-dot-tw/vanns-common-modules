@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { usePathnameWithoutLang } from "./usePathnameWithoutLang"
+import { usePathnameWithoutLang } from "~/use/next/usePathnameWithoutLang"
 import { TypeI18n } from "~/config/next/i18n.config"
 
 export function tools(i18nConfig:TypeI18n){

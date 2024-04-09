@@ -6,7 +6,7 @@ interface TypeProps {
   className?: string
 }
 
-function RatioArea(props:TypeProps){
+export default function RatioArea(props:TypeProps){
   return (
     <div className={twMerge('ratioArea relative w-full', props?.className)}>
       <div className="fill pointer-events-none relative"
@@ -18,5 +18,3 @@ function RatioArea(props:TypeProps){
     </div>
   )
 }
-
-export default RatioArea

@@ -13,15 +13,15 @@ var __rest = (this && this.__rest) || function (s, e) {
 import Link from "next/link";
 import { useParams } from "next/navigation";
 function LinkWithLang(props, ref) {
-    var href = props.href, propsLang = props.lang, defaultLang = props.defaultLang, restProps = __rest(props, ["href", "lang", "defaultLang"]);
+    var href = props.href, propsLang = props.lang, defaultLang = props.defaultLang, children = props.children, restProps = __rest(props, ["href", "lang", "defaultLang", "children"]);
     if (!href) {
-        return <span {...restProps}></span>;
+        return <span {...restProps}>{children}</span>;
     }
     var params = useParams();
     var currentLang = params.lang;
     var redirectTargetLang = propsLang || currentLang;
     var isDefaultLang = redirectTargetLang === defaultLang;
     var path = isDefaultLang ? href : "/".concat(redirectTargetLang).concat(href);
-    return <Link href={path} {...restProps}></Link>;
+    return <Link href={path} {...restProps}>{children}</Link>;
 }
 export default LinkWithLang;

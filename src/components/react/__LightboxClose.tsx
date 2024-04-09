@@ -11,7 +11,7 @@ interface TypeProps {
   color?: string
 }
 
-function LightboxClose(props:TypeProps){
+export default function LightboxClose(props:TypeProps){
 
   const store = useStore()
   const viewport = useWindowSize()
@@ -48,5 +48,3 @@ function LightboxClose(props:TypeProps){
     </div>
   </div>
 }
-
-export default LightboxClose

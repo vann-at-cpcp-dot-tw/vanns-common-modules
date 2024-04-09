@@ -7,11 +7,9 @@ interface TypeProps {
   dom: HTMLElement
 }
 
-function Portal(props:TypeProps){
+export default function Portal(props:TypeProps){
   return ReactDOM.createPortal(
     props.children,
     props.dom
   )
 }
-
-export default Portal
