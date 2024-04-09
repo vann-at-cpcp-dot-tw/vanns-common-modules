@@ -1,1 +1,1 @@
-export * from './ApolloClient';
+"use strict";
