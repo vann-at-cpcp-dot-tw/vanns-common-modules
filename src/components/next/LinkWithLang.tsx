@@ -12,9 +12,9 @@ interface TypeProps {
 }
 
 function LinkWithLang(props:TypeProps, ref:React.ReactNode){
-  const { href, lang:propsLang, defaultLang, ...restProps } = props
+  const { href, lang:propsLang, defaultLang, children, ...restProps } = props
   if( !href ){
-    return <span {...restProps}>{}</span>
+    return <span {...restProps}>{children}</span>
   }
 
   const params = useParams()
@@ -23,7 +23,7 @@ function LinkWithLang(props:TypeProps, ref:React.ReactNode){
   const isDefaultLang = redirectTargetLang === defaultLang
   const path = isDefaultLang ?href :`/${redirectTargetLang}${href}`
 
-  return <Link href={path} {...restProps}>{}</Link>
+  return <Link href={path} {...restProps}>{children}</Link>
 }
 
 export default LinkWithLang
