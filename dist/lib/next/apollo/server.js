@@ -58,7 +58,7 @@ import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/clien
 import { setContext } from "@apollo/client/link/context";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
 import { REVALIDATE } from './index';
-export function makeClient(args) {
+export function makeApolloClient(args) {
     var _a = args !== null && args !== void 0 ? args : {}, uri = _a.uri, context = _a.context, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
     var httpLink = new HttpLink({
         uri: uri

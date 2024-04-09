@@ -4,7 +4,7 @@ import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rs
 import { REVALIDATE, IFetchGQLArgs, IMakeApolloClient } from './index'
 
 
-export function makeClient(args?:IMakeApolloClient){
+export function makeApolloClient(args?:IMakeApolloClient){
 
   const { uri, context, memoryCacheOptions, middlewares } = args ?? {}
 
