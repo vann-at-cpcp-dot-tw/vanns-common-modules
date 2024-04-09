@@ -7,7 +7,7 @@ interface TypeProps {
   defaultLang: string // pass short code, eg: zh, en...
   href?: string
   lang?: string | string[]
-  children: React.ReactNode
+  children?: React.ReactNode
   [key:string]: any
 }
 
