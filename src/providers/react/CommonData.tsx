@@ -1,9 +1,11 @@
 "use client"
-import {  ReactNode, createContext } from 'react'
+
+import { ReactNode, createContext } from 'react'
 export interface CommonDataContextType {
   [key: string]: any
 }
-export const CommonDataContext = createContext<CommonDataContextType>({})
+
+export const CommonDataContext = createContext({})
 
 export function CommonDataProvider({
   children,

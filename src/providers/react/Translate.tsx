@@ -1,4 +1,5 @@
 "use client"
+
 import {  ReactNode, createContext } from 'react'
 
 export const TranslateContext = createContext<{[key:string]:string}>({})
