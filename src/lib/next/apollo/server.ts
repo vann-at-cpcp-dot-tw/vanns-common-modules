@@ -48,7 +48,13 @@ export function makeApolloClient(args?:IMakeApolloClient){
 
 export function makeFetcher(getClient:Function){
   return async function fetchGQL(query:TypedDocumentNode, args?:IFetchGQLArgs){
-    const result = await getClient().query(args)
+    const variables = args?.variables || {}
+    const context = args?.context || {}
+    const result = await getClient().query({
+      query,
+      variables,
+      context
+    })
     return result?.data
   }
 }

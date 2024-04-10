@@ -87,10 +87,17 @@ export function makeApolloClient(args) {
 export function makeFetcher(getClient) {
     return function fetchGQL(query, args) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var variables, context, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, getClient().query(args)];
+                    case 0:
+                        variables = (args === null || args === void 0 ? void 0 : args.variables) || {};
+                        context = (args === null || args === void 0 ? void 0 : args.context) || {};
+                        return [4 /*yield*/, getClient().query({
+                                query: query,
+                                variables: variables,
+                                context: context
+                            })];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result === null || result === void 0 ? void 0 : result.data];
