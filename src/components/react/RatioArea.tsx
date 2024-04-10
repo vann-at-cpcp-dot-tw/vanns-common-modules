@@ -1,5 +1,5 @@
-import { twMerge } from 'tailwind-merge'
-
+// import { twMerge } from 'tailwind-merge'
+import { cn } from "~/lib/utils"
 interface TypeProps {
   ratio: number | string
   children: React.ReactNode
@@ -8,7 +8,7 @@ interface TypeProps {
 
 export default function RatioArea(props:TypeProps){
   return (
-    <div className={twMerge('ratioArea relative w-full', props?.className)}>
+    <div className={cn('ratioArea relative w-full', props?.className)}>
       <div className="fill pointer-events-none relative"
       style={{
         width: '100%',
