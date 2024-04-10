@@ -40,16 +40,16 @@ export const shareFb = function(url:string){
 
 }
 
-export const shareLine = function(url:string, title:string){
-  window.open('http://line.naver.jp/R/msg/text/?' + title + '%0D%0A' + url)
+export const shareLine = function(url:string){
+  window.open(`http://line.naver.jp/R/msg/text/?${url}`)
 }
 
-export const shareTwitter = function(url:string, title:string){
+export const shareTwitter = function(url:string){
   window.open(`https://twitter.com/intent/tweet?url=${url}`)
 }
 
 export const shareLinkedin = function(url:string){
-  window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url)
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`)
 }
 
 

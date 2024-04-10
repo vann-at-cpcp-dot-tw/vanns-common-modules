@@ -1,7 +1,7 @@
 export declare const isEmpty: (value: any) => boolean;
 export declare const shareFb: (url: string) => void;
-export declare const shareLine: (url: string, title: string) => void;
-export declare const shareTwitter: (url: string, title: string) => void;
+export declare const shareLine: (url: string) => void;
+export declare const shareTwitter: (url: string) => void;
 export declare const shareLinkedin: (url: string) => void;
 export declare const numberFormat: (num: any, options?: Intl.NumberFormatOptions & {
     locale?: string;

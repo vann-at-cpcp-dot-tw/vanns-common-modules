@@ -35,14 +35,14 @@ export var isEmpty = function (value) {
 export var shareFb = function (url) {
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url));
 };
-export var shareLine = function (url, title) {
-    window.open('http://line.naver.jp/R/msg/text/?' + title + '%0D%0A' + url);
+export var shareLine = function (url) {
+    window.open("http://line.naver.jp/R/msg/text/?".concat(url));
 };
-export var shareTwitter = function (url, title) {
+export var shareTwitter = function (url) {
     window.open("https://twitter.com/intent/tweet?url=".concat(url));
 };
 export var shareLinkedin = function (url) {
-    window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url);
+    window.open("https://www.linkedin.com/sharing/share-offsite/?url=".concat(url));
 };
 export var numberFormat = function (num, options) {
     if (options === void 0) { options = {}; }
