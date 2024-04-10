@@ -39,8 +39,8 @@ export declare const charBytes: (str: string) => number;
 export declare const strWidth: (text?: string, fontCssProps?: string) => number;
 export declare const toCamelCase: (str?: string, breakKey?: string, upperCamelCase?: boolean) => string;
 export declare const calcSizeByRatio: ({ w, h, ratio }: {
-    w?: number | undefined;
-    h?: number | undefined;
+    w?: number | null | undefined;
+    h?: number | null | undefined;
     ratio: number;
 }) => {
     w: number;

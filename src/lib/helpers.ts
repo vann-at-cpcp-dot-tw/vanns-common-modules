@@ -244,7 +244,7 @@ export const toCamelCase = function(str='', breakKey='-', upperCamelCase=false){
 }
 
 
-export const calcSizeByRatio = function({w, h, ratio}:{w?:number, h?:number, ratio:number}) {
+export const calcSizeByRatio = function({w, h, ratio}:{w?:number|null|undefined, h?:number|null|undefined, ratio:number}) {
   // 輸入寬(或高) + 比例, return 符合比例的寬高值
   // 比例格式 =  Number((16/9).toFixed(2))
   if (typeof w !== 'number' && typeof h !== 'number' ) {
