@@ -7,4 +7,4 @@ export declare function TranslateProvider({ children, translation }: {
     translation: {
         [key: string]: string;
     };
-}): import("react").JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;

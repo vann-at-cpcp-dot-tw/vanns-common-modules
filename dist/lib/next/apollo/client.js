@@ -18,6 +18,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
+import { jsx as _jsx } from "react/jsx-runtime";
 import { ApolloLink, HttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink, ApolloNextAppProvider } from "@apollo/experimental-nextjs-app-support/ssr";
@@ -64,9 +65,7 @@ export function makeApolloClient(args) {
 }
 export function ApolloClientProvider(_a) {
     var children = _a.children, makeClient = _a.makeClient;
-    return <ApolloNextAppProvider makeClient={function () {
+    return _jsx(ApolloNextAppProvider, { makeClient: function () {
             return makeClient();
-        }}>
-    {children}
-  </ApolloNextAppProvider>;
+        }, children: children });
 }

@@ -5,4 +5,4 @@ export declare const ScopeStoreContext: import("react").Context<{
 export declare function ScopeStoreProvider({ children, state }: {
     children: ReactNode;
     state: any;
-}): import("react").JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;

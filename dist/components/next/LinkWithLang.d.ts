@@ -6,5 +6,5 @@ interface TypeProps {
     children?: React.ReactNode;
     [key: string]: any;
 }
-declare function LinkWithLang(props: TypeProps, ref: React.ReactNode): import("react").JSX.Element;
+declare function LinkWithLang(props: TypeProps, ref: React.ReactNode): import("react/jsx-runtime").JSX.Element;
 export default LinkWithLang;
