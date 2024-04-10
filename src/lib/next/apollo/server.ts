@@ -2,7 +2,7 @@ import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/clien
 import { setContext } from "@apollo/client/link/context"
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { REVALIDATE, IFetchGQLArgs, IMakeApolloClient } from './index'
-
+import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 
 export function makeApolloClient(args?:IMakeApolloClient){
 
@@ -46,7 +46,9 @@ export function makeApolloClient(args?:IMakeApolloClient){
   }
 }
 
-export const fetchGQL = async function(getClient:Function, args:IFetchGQLArgs){
-  const result = await getClient().query(args)
-  return result?.data
+export function makeFetcher(getClient:Function){
+  return async function fetchGQL(query:TypedDocumentNode, args?:IFetchGQLArgs){
+    const result = await getClient().query(args)
+    return result?.data
+  }
 }

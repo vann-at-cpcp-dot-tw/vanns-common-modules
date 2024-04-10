@@ -4,7 +4,6 @@ import { ApolloLink } from "@apollo/client"
 export const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
 
 export interface IFetchGQLArgs {
-  query: TypedDocumentNode,
   variables?: {
     [key:string]: any;
   }
