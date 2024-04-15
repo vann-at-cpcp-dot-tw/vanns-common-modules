@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-export interface CommonDataContextType {
-    [key: string]: any;
+export interface CommonDataContextType<T> {
+    [key: string]: T;
 }
-export declare const CommonDataContext: import("react").Context<{}>;
-export declare function CommonDataProvider({ children, commonData }: {
-    children: ReactNode;
-    commonData: any;
-}): import("react/jsx-runtime").JSX.Element;
+export declare function createCommonDataContext<T>(): {
+    Context: React.Context<CommonDataContextType<T>>;
+    Provider: React.FC<{
+        children: ReactNode;
+        commonData: CommonDataContextType<T>;
+    }>;
+};
