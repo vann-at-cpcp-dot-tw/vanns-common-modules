@@ -21,7 +21,7 @@ function LinkWithLang(props:TypeProps, ref:React.ReactNode){
   const currentLang = params.lang
   const redirectTargetLang = propsLang || currentLang
   const isDefaultLang = redirectTargetLang === defaultLang
-  const path = isDefaultLang ?href :`/${redirectTargetLang}${href}`
+  const path = href.includes('http') ?href :isDefaultLang ?href :`/${redirectTargetLang}${href}`
 
   return <Link href={path} {...restProps}>{children}</Link>
 }

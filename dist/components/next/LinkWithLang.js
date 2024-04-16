@@ -33,7 +33,7 @@ function LinkWithLang(props, ref) {
     var currentLang = params.lang;
     var redirectTargetLang = propsLang || currentLang;
     var isDefaultLang = redirectTargetLang === defaultLang;
-    var path = isDefaultLang ? href : "/".concat(redirectTargetLang).concat(href);
+    var path = href.includes('http') ? href : isDefaultLang ? href : "/".concat(redirectTargetLang).concat(href);
     return _jsx(Link, __assign({ href: path }, restProps, { children: children }));
 }
 export default LinkWithLang;
