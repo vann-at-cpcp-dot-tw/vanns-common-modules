@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { usePathnameWithoutLang } from "../../use/next/usePathnameWithoutLang";
+import { useSearchObject } from "../../use/next";
 export function tools(i18nConfig) {
     function pathnameWithLang(path, lang) {
         if (lang === i18nConfig.defaultLocale.shortCode) {
@@ -33,6 +34,7 @@ export function useLangGuard(i18nConfig) {
     var params = useParams();
     var router = useRouter();
     var pathname = usePathnameWithoutLang();
+    var searchString = useSearchObject().searchString;
     var lang = params.lang;
     var _a = tools(i18nConfig), convertLocaleCode = _a.convertLocaleCode, pathnameWithLang = _a.pathnameWithLang, isSupportedLang = _a.isSupportedLang;
     var localeCode = convertLocaleCode(lang, 'long');
@@ -74,7 +76,7 @@ export function useLangGuard(i18nConfig) {
         var browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode;
         var targetPath = determineTargetPath(storedLang, browserLang, path);
         if (targetPath) {
-            router.push(targetPath);
+            router.push("".concat(targetPath, "?").concat(searchString));
         }
     }, [
         lang,

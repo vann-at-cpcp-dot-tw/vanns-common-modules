@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "~/use/next/usePathnameWithoutLang"
 import { TypeI18n } from "~/config/next/i18n.config"
+import { useSearchObject } from "~/use/next"
 
 export function tools(i18nConfig:TypeI18n){
 
@@ -41,12 +42,13 @@ export function useLangGuard(i18nConfig:TypeI18n){
   const params = useParams()
   const router = useRouter()
   const pathname = usePathnameWithoutLang()
+  const { searchString } = useSearchObject()
   const { lang } = params
   const { convertLocaleCode, pathnameWithLang, isSupportedLang } = tools(i18nConfig)
   const localeCode = convertLocaleCode((lang as string), 'long')
+
   const determineTargetPath = useCallback((storedLang:string | null, browserLang:string, path:string)=>{
     // 語言優先度： URL夾帶 > localStorage 儲存 > browser lang > default lang
-
     // 如果 URL 有傳 lang，且不等於 default lang（網址有明確夾帶 lang）的情況...
     if( lang && typeof lang === 'string' && lang !== i18nConfig.defaultLocale.shortCode ){
 
@@ -91,7 +93,7 @@ export function useLangGuard(i18nConfig:TypeI18n){
     const targetPath = determineTargetPath(storedLang, browserLang, path)
 
     if (targetPath) {
-      router.push(targetPath)
+      router.push(`${targetPath}?${searchString}`)
     }
 
   }, [
