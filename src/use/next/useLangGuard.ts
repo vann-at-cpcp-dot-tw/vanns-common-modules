@@ -45,6 +45,21 @@ export function useLangGuard(i18nConfig:TypeI18n){
   const { convertLocaleCode, pathnameWithLang, isSupportedLang } = tools(i18nConfig)
   const localeCode = convertLocaleCode((lang as string), 'long')
   const determineTargetPath = useCallback((storedLang:string | null, browserLang:string, path:string)=>{
+    // 語言優先度： URL夾帶 > localStorage 儲存 > browser lang > default lang
+
+    // 如果 URL 有傳 lang，且不等於 default lang（網址有明確夾帶 lang）的情況...
+    if( lang && typeof lang === 'string' && lang !== i18nConfig.defaultLocale.shortCode ){
+
+      let targetLang = i18nConfig.defaultLocale.shortCode
+
+      if( isSupportedLang(lang) ){
+        targetLang = lang
+      }else if( storedLang && isSupportedLang(storedLang) ){
+        targetLang = storedLang
+      }
+
+      return pathnameWithLang(path, targetLang)
+    }
 
     // 如果 localStorage 有儲存 lang
     if (storedLang ) {
@@ -54,14 +69,15 @@ export function useLangGuard(i18nConfig:TypeI18n){
         return pathnameWithLang(path, isSupportedLang(storedLang) ? storedLang : i18nConfig.defaultLocale.shortCode)
       }
 
-    // 如果 localStorage 沒有儲存 lang，但瀏覽器的 lang 在 JGB 語言支援列表中，則自動將瀏覽器語言儲存至 localStorage 後，回傳 browserLang
+    // 如果 localStorage 沒有儲存 lang，但瀏覽器的 lang 在網站支援的語言列表中，則自動將瀏覽器語言儲存至 localStorage 後，回傳 browserLang
     } else if (isSupportedLang(browserLang)) {
 
       localStorage.setItem('lang', browserLang)
       return pathnameWithLang(path, browserLang)
 
-    // 如果 localStorage 沒有儲存 lang，且瀏覽器的 lang 又不在 JGB 支援的語言列表中，則回傳 default lang
+    // 如果 localStorage 沒有儲存 lang，且瀏覽器的 lang 又不在網站支援的語言列表中，則回傳 default lang
     } else {
+      localStorage.setItem('lang', i18nConfig.defaultLocale.shortCode)
       return pathnameWithLang(path, i18nConfig.defaultLocale.shortCode)
     }
   }, [lang])
