@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-interface TypeProps {
+export interface TypeProps {
   defaultLang: string // pass short code, eg: zh, en...
   href?: string
   lang?: string | string[]
