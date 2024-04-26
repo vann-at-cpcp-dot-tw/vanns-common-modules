@@ -11,14 +11,11 @@ var __assign = (this && this.__assign) || function () {
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React from 'react';
-// 原始的 LinkWithLang 組件
 import LinkWithLang from './LinkWithLang';
-// 創建一個高階組件工廠函數
-var createLinkWithLangComponent = function (defaultLang) {
+export var createLinkWithLangComponent = function (defaultLang) {
     var WrappedLinkWithLang = React.forwardRef(function (props, ref) {
         return _jsx(LinkWithLang, __assign({}, props, { defaultLang: defaultLang, ref: ref }));
     });
     WrappedLinkWithLang.displayName = 'WrappedLinkWithLang';
     return WrappedLinkWithLang;
 };
-export default createLinkWithLangComponent;
