@@ -1,5 +1,5 @@
 /// <reference types="react" />
-interface TypeProps {
+export interface TypeProps {
     defaultLang: string;
     href?: string;
     lang?: string | string[];
