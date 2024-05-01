@@ -27,6 +27,7 @@
     "react-query": "^3.39.3",
     "tailwind-merge": "^2.2.2",
     "typescript": "^5.4.3",
+    "vue": "^3.4.26",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
