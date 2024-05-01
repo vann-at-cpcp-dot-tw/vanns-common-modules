@@ -9,39 +9,48 @@
 
   &-dark
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       filter: brightness(0.8)
   &-light
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       filter: brightness(1.2)
   &-scaleUp
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       transform: scale(1.1)
   &-scaleDown
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       transform: scale(0.9)
   &-up
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       transform: translateY(-10px)
   &-down
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       transform: translateY(10px)
   &-opacity
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       opacity: 0.7
   &-inside-brightest
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       >*
         filter: brightness(100)
   &-inside-darkest
     @extend .btn
-    &:hover
+    &:hover,
+    &:active
       >*
         filter: brightness(-100)
