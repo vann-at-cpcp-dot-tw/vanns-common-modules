@@ -4,6 +4,10 @@ declare const _default: import("vue").DefineComponent<{
         type: StringConstructor;
         default: string;
     };
+    class: {
+        type: StringConstructor;
+        default: string;
+    };
     ratio: {
         type: (StringConstructor | NumberConstructor)[];
         required: true;
@@ -13,11 +17,16 @@ declare const _default: import("vue").DefineComponent<{
         type: StringConstructor;
         default: string;
     };
+    class: {
+        type: StringConstructor;
+        default: string;
+    };
     ratio: {
         type: (StringConstructor | NumberConstructor)[];
         required: true;
     };
 }>>, {
     className: string;
+    class: string;
 }, {}>;
 export default _default;
