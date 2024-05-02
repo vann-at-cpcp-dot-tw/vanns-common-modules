@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare const _default: import("vue").DefineComponent<{
     className: {
         type: StringConstructor;
@@ -7,7 +8,7 @@ declare const _default: import("vue").DefineComponent<{
         type: (StringConstructor | NumberConstructor)[];
         required: true;
     };
-}, () => import("react/jsx-runtime").JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => import("react").JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     className: {
         type: StringConstructor;
         default: string;

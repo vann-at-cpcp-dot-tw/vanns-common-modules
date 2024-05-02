@@ -7,4 +7,4 @@ export declare function makeApolloClient(args?: IMakeApolloClient): {
 export declare function ApolloClientProvider({ children, makeClient, }: {
     children: ReactNode;
     makeClient: Function;
-}): import("react/jsx-runtime").JSX.Element;
+}): import("react").JSX.Element;
