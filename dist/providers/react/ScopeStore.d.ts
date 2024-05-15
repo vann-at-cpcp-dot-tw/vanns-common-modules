@@ -3,7 +3,7 @@ export declare function createScopeStoreProvider<T>(): {
     ScopeStoreProvider: ({ children, state }: {
         children: ReactNode;
         state: T;
-    }) => import("react/jsx-runtime").JSX.Element;
+    }) => import("react").JSX.Element;
     useScopeStore: () => NonNullable<T>;
 };
 /****************** 使用方法 ******************
