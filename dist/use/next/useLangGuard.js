@@ -30,7 +30,7 @@ export function tools(i18nConfig) {
         isSupportedLang: isSupportedLang,
     };
 }
-export function useLangGuard(i18nConfig) {
+export function useLangGuard(i18nConfig, args) {
     var params = useParams();
     var router = useRouter();
     var pathname = usePathnameWithoutLang();
@@ -40,20 +40,39 @@ export function useLangGuard(i18nConfig) {
     var localeCode = convertLocaleCode(lang, 'long');
     useEffect(function () {
         var browserLocaleCode = navigator.language;
-        var path = pathname;
+        var defaultLang = i18nConfig.defaultLocale.shortCode;
         var storedLang = localStorage.getItem('lang');
         var browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode;
-        var targetLang = lang || storedLang || browserLang;
-        targetLang = isSupportedLang(targetLang) ? targetLang : i18nConfig.defaultLocale.shortCode;
-        var targetPath = pathnameWithLang(path, targetLang);
-        if (targetPath) {
-            router.push("".concat(targetPath, "?").concat(searchString));
+        var paramLang = lang;
+        var isUrlHasLang = paramLang !== defaultLang;
+        var targetLang;
+        if (isUrlHasLang) { // 如果網址有帶 lang，則尊重網址
+            targetLang = paramLang;
         }
-    }, [
-        lang,
-        pathname,
-        router,
-    ]);
+        else {
+            if (storedLang) {
+                // 如果網址沒有帶 lang，但是有 storedLang 則看 storedLang 是否支援
+                targetLang = isSupportedLang(storedLang) ? storedLang : defaultLang;
+            }
+            else {
+                // 如果網址沒有帶 lang，也沒有 storedLang 則看 browserLang 是否支援
+                targetLang = isSupportedLang(browserLang) ? browserLang : defaultLang;
+            }
+        }
+        var targetPath = pathnameWithLang(pathname, targetLang);
+        if (targetPath) {
+            if (args === null || args === void 0 ? void 0 : args.withQueryString) {
+                router.push("".concat(targetPath, "?").concat(searchString));
+            }
+            else {
+                router.push("".concat(targetPath));
+            }
+        }
+    }, []);
+    return {
+        lang: lang,
+        localeCode: localeCode,
+    };
     return {
         lang: lang,
         localeCode: localeCode,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "~/use/next/usePathnameWithoutLang"
 import { TypeI18n } from "~/config/next/i18n.config"
@@ -37,7 +37,7 @@ export function tools(i18nConfig:TypeI18n){
   }
 }
 
-export function useLangGuard(i18nConfig:TypeI18n){
+export function useLangGuard(i18nConfig:TypeI18n, args?:{ withQueryString?:boolean }){
 
   const params = useParams()
   const router = useRouter()
@@ -48,23 +48,41 @@ export function useLangGuard(i18nConfig:TypeI18n){
   const localeCode = convertLocaleCode((lang as string), 'long')
 
   useEffect(()=>{
-
     const browserLocaleCode = navigator.language
-    const path = pathname
+    const defaultLang = i18nConfig.defaultLocale.shortCode
     const storedLang = localStorage.getItem('lang')
     const browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode
-    let targetLang = lang || storedLang || browserLang
-    targetLang = isSupportedLang(targetLang as string) ? targetLang : i18nConfig.defaultLocale.shortCode
-    const targetPath = pathnameWithLang(path, targetLang as string)
-    if (targetPath) {
-      router.push(`${targetPath}?${searchString}`)
+    const paramLang = lang
+    const isUrlHasLang = paramLang !== defaultLang
+    let targetLang
+
+    if( isUrlHasLang ){ // 如果網址有帶 lang，則尊重網址
+      targetLang = paramLang
+    }else{
+      if( storedLang ){
+        // 如果網址沒有帶 lang，但是有 storedLang 則看 storedLang 是否支援
+        targetLang = isSupportedLang(storedLang) ?storedLang :defaultLang
+      }else{
+        // 如果網址沒有帶 lang，也沒有 storedLang 則看 browserLang 是否支援
+        targetLang = isSupportedLang(browserLang) ?browserLang :defaultLang
+      }
     }
 
-  }, [
+    const targetPath = pathnameWithLang(pathname, targetLang as string)
+
+    if (targetPath) {
+      if( args?.withQueryString ){
+        router.push(`${targetPath}?${searchString}`)
+      }else{
+        router.push(`${targetPath}`)
+      }
+    }
+  }, [])
+
+  return {
     lang,
-    pathname,
-    router,
-  ])
+    localeCode,
+  }
 
   return {
     lang,

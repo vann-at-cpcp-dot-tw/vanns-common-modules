@@ -4,7 +4,9 @@ export declare function tools(i18nConfig: TypeI18n): {
     convertLocaleCode: (lang: string, to: string) => string | undefined;
     isSupportedLang: (shortCode: string) => boolean;
 };
-export declare function useLangGuard(i18nConfig: TypeI18n): {
+export declare function useLangGuard(i18nConfig: TypeI18n, args?: {
+    withQueryString?: boolean;
+}): {
     lang: string | string[];
     localeCode: string | undefined;
 };
