@@ -17,23 +17,7 @@ export function useSearchObject(){
     })
   }, [searchString])
 
-  // const updateSearch = function(updateQuery:{[key:string]:any}){
-
-  //   const currentSearch = queryString.parse(location.search, {
-  //     arrayFormat: 'comma',
-  //     parseNumbers: true,
-  //   })
-
-  //   router.push(`
-  //     ${pathname}?${
-  //     queryString.stringify({
-  //       ...currentSearch,
-  //       ...updateQuery,
-  //     }, {arrayFormat: 'comma'})}
-  //   `)
-  // }
-
-  const updateSearch = useCallback((updateQuery:{[key:string]:any})=>{
+  const updateSearch = useCallback((updateQuery:{[key:string]:any}, pushOptions?:{scroll?:boolean})=>{
     const currentSearch = queryString.parse(location.search, {
       arrayFormat: 'comma',
       parseNumbers: true,
@@ -44,7 +28,7 @@ export function useSearchObject(){
         ...currentSearch,
         ...updateQuery,
       }, {arrayFormat: 'comma'})}
-    `)
+    `, { scroll: pushOptions?.scroll || false })
   }, [router, pathname])
 
   const historyUpdateSearch = useCallback((updateQuery:{[key:string]:any})=>{

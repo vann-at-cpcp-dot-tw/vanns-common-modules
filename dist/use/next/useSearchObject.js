@@ -25,25 +25,12 @@ export function useSearchObject() {
             parseNumbers: true,
         });
     }, [searchString]);
-    // const updateSearch = function(updateQuery:{[key:string]:any}){
-    //   const currentSearch = queryString.parse(location.search, {
-    //     arrayFormat: 'comma',
-    //     parseNumbers: true,
-    //   })
-    //   router.push(`
-    //     ${pathname}?${
-    //     queryString.stringify({
-    //       ...currentSearch,
-    //       ...updateQuery,
-    //     }, {arrayFormat: 'comma'})}
-    //   `)
-    // }
-    var updateSearch = useCallback(function (updateQuery) {
+    var updateSearch = useCallback(function (updateQuery, pushOptions) {
         var currentSearch = queryString.parse(location.search, {
             arrayFormat: 'comma',
             parseNumbers: true,
         });
-        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "));
+        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "), { scroll: (pushOptions === null || pushOptions === void 0 ? void 0 : pushOptions.scroll) || false });
     }, [router, pathname]);
     var historyUpdateSearch = useCallback(function (updateQuery) {
         var currentSearch = queryString.parse(location.search, {
