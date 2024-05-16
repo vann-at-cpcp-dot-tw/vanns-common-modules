@@ -17,7 +17,7 @@ export function useSearchObject(){
     })
   }, [searchString])
 
-  const updateSearch = useCallback((updateQuery:{[key:string]:any}, pushOptions?:{scroll?:boolean})=>{
+  const updateSearch = useCallback((updateQuery:{[key:string]:any}, pushOptions?:any)=>{
     const currentSearch = queryString.parse(location.search, {
       arrayFormat: 'comma',
       parseNumbers: true,
@@ -28,7 +28,7 @@ export function useSearchObject(){
         ...currentSearch,
         ...updateQuery,
       }, {arrayFormat: 'comma'})}
-    `, { scroll: pushOptions?.scroll || false })
+    `, pushOptions || {})
   }, [router, pathname])
 
   const historyUpdateSearch = useCallback((updateQuery:{[key:string]:any})=>{

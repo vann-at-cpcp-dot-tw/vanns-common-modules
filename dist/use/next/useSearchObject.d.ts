@@ -5,9 +5,7 @@ export declare function useSearchObject(): {
     searchString: string;
     updateSearch: (updateQuery: {
         [key: string]: any;
-    }, pushOptions?: {
-        scroll?: boolean;
-    }) => void;
+    }, pushOptions?: any) => void;
     historyUpdateSearch: (updateQuery: {
         [key: string]: any;
     }) => void;

@@ -30,7 +30,7 @@ export function useSearchObject() {
             arrayFormat: 'comma',
             parseNumbers: true,
         });
-        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "), { scroll: (pushOptions === null || pushOptions === void 0 ? void 0 : pushOptions.scroll) || false });
+        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "), pushOptions || {});
     }, [router, pathname]);
     var historyUpdateSearch = useCallback(function (updateQuery) {
         var currentSearch = queryString.parse(location.search, {
