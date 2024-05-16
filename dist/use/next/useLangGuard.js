@@ -61,18 +61,14 @@ export function useLangGuard(i18nConfig, args) {
         }
         var targetPath = pathnameWithLang(pathname, targetLang);
         if (targetPath) {
-            if (args === null || args === void 0 ? void 0 : args.withQueryString) {
-                router.push("".concat(targetPath, "?").concat(searchString));
+            if (args === null || args === void 0 ? void 0 : args.withoutQueryString) {
+                router.push("".concat(targetPath));
             }
             else {
-                router.push("".concat(targetPath));
+                router.push("".concat(targetPath, "?").concat(searchString));
             }
         }
     }, []);
-    return {
-        lang: lang,
-        localeCode: localeCode,
-    };
     return {
         lang: lang,
         localeCode: localeCode,

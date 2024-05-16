@@ -37,7 +37,7 @@ export function tools(i18nConfig:TypeI18n){
   }
 }
 
-export function useLangGuard(i18nConfig:TypeI18n, args?:{ withQueryString?:boolean }){
+export function useLangGuard(i18nConfig:TypeI18n, args?:{ withoutQueryString?:boolean }){
 
   const params = useParams()
   const router = useRouter()
@@ -71,18 +71,14 @@ export function useLangGuard(i18nConfig:TypeI18n, args?:{ withQueryString?:boole
     const targetPath = pathnameWithLang(pathname, targetLang as string)
 
     if (targetPath) {
-      if( args?.withQueryString ){
-        router.push(`${targetPath}?${searchString}`)
-      }else{
+      if( args?.withoutQueryString ){
         router.push(`${targetPath}`)
+      }else{
+        router.push(`${targetPath}?${searchString}`)
       }
     }
-  }, [])
 
-  return {
-    lang,
-    localeCode,
-  }
+  }, [])
 
   return {
     lang,
