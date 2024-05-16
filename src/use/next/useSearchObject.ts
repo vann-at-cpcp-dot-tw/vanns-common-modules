@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 import queryString from "query-string"
-
+import { NavigateOptions } from "next/dist/shared/lib/app-router-context.shared-runtime"
 export function useSearchObject(){
   const router = useRouter()
   const pathname = usePathname()
@@ -17,7 +17,7 @@ export function useSearchObject(){
     })
   }, [searchString])
 
-  const updateSearch = useCallback((updateQuery:{[key:string]:any}, pushOptions?:any)=>{
+  const updateSearch = useCallback((updateQuery:{[key:string]:any}, options?:NavigateOptions)=>{
     const currentSearch = queryString.parse(location.search, {
       arrayFormat: 'comma',
       parseNumbers: true,
@@ -28,7 +28,7 @@ export function useSearchObject(){
         ...currentSearch,
         ...updateQuery,
       }, {arrayFormat: 'comma'})}
-    `, pushOptions || {})
+    `, options || {})
   }, [router, pathname])
 
   const historyUpdateSearch = useCallback((updateQuery:{[key:string]:any})=>{

@@ -25,12 +25,12 @@ export function useSearchObject() {
             parseNumbers: true,
         });
     }, [searchString]);
-    var updateSearch = useCallback(function (updateQuery, pushOptions) {
+    var updateSearch = useCallback(function (updateQuery, options) {
         var currentSearch = queryString.parse(location.search, {
             arrayFormat: 'comma',
             parseNumbers: true,
         });
-        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "), pushOptions || {});
+        router.push("\n      ".concat(pathname, "?").concat(queryString.stringify(__assign(__assign({}, currentSearch), updateQuery), { arrayFormat: 'comma' }), "\n    "), options || {});
     }, [router, pathname]);
     var historyUpdateSearch = useCallback(function (updateQuery) {
         var currentSearch = queryString.parse(location.search, {
