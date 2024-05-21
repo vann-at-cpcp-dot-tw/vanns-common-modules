@@ -171,8 +171,10 @@ export const getDecimalPlace = function(num:number){
 // 滾動到特定 el
 export const scrollToSection = function({el, speed=800, offset=0}:any){
   if (el) {
+    const targetRect = el.getBoundingClientRect()
+    const targetTop = targetRect.top + window.pageYOffset;
     window.scrollTo({
-      top: el.offsetTop - Number((document?.body?.style?.paddingTop?.split?.('px')?.[0] || 0)) + offset,
+      top: targetTop - Number((document?.body?.style?.paddingTop?.split?.('px')?.[0] || 0)) + offset,
       behavior: 'smooth'
     })
   }

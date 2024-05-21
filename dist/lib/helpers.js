@@ -139,8 +139,10 @@ export var scrollToSection = function (_a) {
     var _b, _c, _d, _e, _f;
     var el = _a.el, _g = _a.speed, speed = _g === void 0 ? 800 : _g, _h = _a.offset, offset = _h === void 0 ? 0 : _h;
     if (el) {
+        var targetRect = el.getBoundingClientRect();
+        var targetTop = targetRect.top + window.pageYOffset;
         window.scrollTo({
-            top: el.offsetTop - Number((((_f = (_e = (_d = (_c = (_b = document === null || document === void 0 ? void 0 : document.body) === null || _b === void 0 ? void 0 : _b.style) === null || _c === void 0 ? void 0 : _c.paddingTop) === null || _d === void 0 ? void 0 : _d.split) === null || _e === void 0 ? void 0 : _e.call(_d, 'px')) === null || _f === void 0 ? void 0 : _f[0]) || 0)) + offset,
+            top: targetTop - Number((((_f = (_e = (_d = (_c = (_b = document === null || document === void 0 ? void 0 : document.body) === null || _b === void 0 ? void 0 : _b.style) === null || _c === void 0 ? void 0 : _c.paddingTop) === null || _d === void 0 ? void 0 : _d.split) === null || _e === void 0 ? void 0 : _e.call(_d, 'px')) === null || _f === void 0 ? void 0 : _f[0]) || 0)) + offset,
             behavior: 'smooth'
         });
     }
