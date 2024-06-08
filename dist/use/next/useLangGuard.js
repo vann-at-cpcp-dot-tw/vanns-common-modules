@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { usePathnameWithoutLang } from "../../use/next/usePathnameWithoutLang";
 import { useSearchObject } from "../../use/next";
+import { isPathnameStartWithLang } from "../../use/next/usePathnameWithoutLang";
 export function tools(i18nConfig) {
     function pathnameWithLang(path, lang) {
         if (lang === i18nConfig.defaultLocale.shortCode) {
@@ -33,18 +34,21 @@ export function tools(i18nConfig) {
 export function useLangGuard(i18nConfig, args) {
     var params = useParams();
     var router = useRouter();
-    var pathname = usePathnameWithoutLang();
+    var pathname = usePathname();
+    var pathnameWithoutLang = usePathnameWithoutLang();
     var searchString = useSearchObject().searchString;
     var lang = params.lang;
     var _a = tools(i18nConfig), convertLocaleCode = _a.convertLocaleCode, pathnameWithLang = _a.pathnameWithLang, isSupportedLang = _a.isSupportedLang;
     var localeCode = convertLocaleCode(lang, 'long');
     useEffect(function () {
+        var _a;
         var browserLocaleCode = navigator.language;
         var defaultLang = i18nConfig.defaultLocale.shortCode;
         var storedLang = localStorage.getItem('lang');
         var browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode;
         var paramLang = lang;
-        var isUrlHasLang = paramLang !== defaultLang;
+        var langShortCodes = (_a = i18nConfig.locales) === null || _a === void 0 ? void 0 : _a.map(function (node) { return node.shortCode; });
+        var isUrlHasLang = langShortCodes.some(function (node) { return isPathnameStartWithLang(pathname, node); });
         var targetLang;
         if (isUrlHasLang) { // 如果網址有帶 lang，則尊重網址
             targetLang = paramLang;
@@ -59,7 +63,7 @@ export function useLangGuard(i18nConfig, args) {
                 targetLang = isSupportedLang(browserLang) ? browserLang : defaultLang;
             }
         }
-        var targetPath = pathnameWithLang(pathname, targetLang);
+        var targetPath = pathnameWithLang(pathnameWithoutLang, targetLang);
         if (targetPath) {
             if (args === null || args === void 0 ? void 0 : args.withoutQueryString) {
                 router.push("".concat(targetPath));
