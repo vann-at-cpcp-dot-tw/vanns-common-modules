@@ -1,8 +1,9 @@
 import { useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "~/use/next/usePathnameWithoutLang"
-import { TypeI18n } from "~/config/next/i18n.config"
+import { TypeI18n, i18n } from "~/config/next/i18n.config"
 import { useSearchObject } from "~/use/next"
+import { isPathnameStartWithLang } from "~/use/next/usePathnameWithoutLang"
 
 export function tools(i18nConfig:TypeI18n){
 
@@ -41,7 +42,8 @@ export function useLangGuard(i18nConfig:TypeI18n, args?:{ withoutQueryString?:bo
 
   const params = useParams()
   const router = useRouter()
-  const pathname = usePathnameWithoutLang()
+  const pathname = usePathname()
+  const pathnameWithoutLang = usePathnameWithoutLang()
   const { searchString } = useSearchObject()
   const { lang } = params
   const { convertLocaleCode, pathnameWithLang, isSupportedLang } = tools(i18nConfig)
@@ -53,7 +55,8 @@ export function useLangGuard(i18nConfig:TypeI18n, args?:{ withoutQueryString?:bo
     const storedLang = localStorage.getItem('lang')
     const browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode
     const paramLang = lang
-    const isUrlHasLang = paramLang !== defaultLang
+    const langShortCodes = i18nConfig.locales?.map((node)=>node.shortCode)
+    const isUrlHasLang = langShortCodes.some((node)=>isPathnameStartWithLang(pathname, node))
     let targetLang
 
     if( isUrlHasLang ){ // 如果網址有帶 lang，則尊重網址
@@ -68,7 +71,7 @@ export function useLangGuard(i18nConfig:TypeI18n, args?:{ withoutQueryString?:bo
       }
     }
 
-    const targetPath = pathnameWithLang(pathname, targetLang as string)
+    const targetPath = pathnameWithLang(pathnameWithoutLang, targetLang as string)
 
     if (targetPath) {
       if( args?.withoutQueryString ){
