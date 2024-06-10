@@ -48,7 +48,7 @@ export declare const calcSizeByRatio: ({ w, h, ratio }: {
     h: number;
 } | undefined;
 export declare const getContainedSize: (img: HTMLImageElement) => number[];
-export declare const convertYoutubeUrlToEmbed: (input: string) => {
+export declare const convertYoutubeUrlToEmbed: (input: string | undefined | null) => {
     cover: string;
     embedURL: string;
 } | null;

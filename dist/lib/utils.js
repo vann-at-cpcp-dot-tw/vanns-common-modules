@@ -310,12 +310,15 @@ export var getContainedSize = function (img) {
 };
 // 將 youtube 網址轉成 embed 用的網址
 export var convertYoutubeUrlToEmbed = function (input) {
-    var _a, _b, _c;
-    var youtubeID;
-    if ((_a = input === null || input === void 0 ? void 0 : input.includes) === null || _a === void 0 ? void 0 : _a.call(input, 'https://youtu.be/')) {
-        youtubeID = (_b = input.replace('https://youtu.be/', '').split('?si')) === null || _b === void 0 ? void 0 : _b[0];
+    var _a, _b;
+    if (typeof input !== 'string') {
+        return null;
     }
-    else if ((_c = input === null || input === void 0 ? void 0 : input.includes) === null || _c === void 0 ? void 0 : _c.call(input, 'https://www.youtube.com/watch?v=')) {
+    var youtubeID;
+    if (input.includes('https://youtu.be/')) {
+        youtubeID = (_a = input.replace('https://youtu.be/', '').split('?si')) === null || _a === void 0 ? void 0 : _a[0];
+    }
+    else if ((_b = input === null || input === void 0 ? void 0 : input.includes) === null || _b === void 0 ? void 0 : _b.call(input, 'https://www.youtube.com/watch?v=')) {
         youtubeID = input.replace('https://www.youtube.com/watch?v=', '').split('&')[0];
     }
     if (youtubeID) {

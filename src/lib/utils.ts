@@ -304,10 +304,14 @@ export const getContainedSize = function(img:HTMLImageElement){
 }
 
 // 將 youtube 網址轉成 embed 用的網址
-export const convertYoutubeUrlToEmbed = function(input:string){
+export const convertYoutubeUrlToEmbed = function(input:string | undefined | null){
+  if( typeof input !== 'string' ){
+    return null
+  }
+
   let youtubeID
 
-  if (input?.includes?.('https://youtu.be/')){
+  if (input.includes('https://youtu.be/')){
     youtubeID = input.replace('https://youtu.be/', '').split('?si')?.[0]
   } else if (input?.includes?.('https://www.youtube.com/watch?v=')){
     youtubeID = input.replace('https://www.youtube.com/watch?v=', '').split('&')[0]
