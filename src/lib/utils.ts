@@ -319,6 +319,7 @@ export const convertYoutubeUrlToEmbed = function(input:string | undefined | null
 
   if (youtubeID){
     return {
+      youtubeID,
       cover: `https://img.youtube.com/vi/${youtubeID}/0.jpg`,
       embedURL: `https://www.youtube.com/embed/${youtubeID}`
     }

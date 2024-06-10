@@ -323,6 +323,7 @@ export var convertYoutubeUrlToEmbed = function (input) {
     }
     if (youtubeID) {
         return {
+            youtubeID: youtubeID,
             cover: "https://img.youtube.com/vi/".concat(youtubeID, "/0.jpg"),
             embedURL: "https://www.youtube.com/embed/".concat(youtubeID)
         };
