@@ -52,5 +52,4 @@ export declare const convertYoutubeUrlToEmbed: (input: string | undefined | null
     cover: string;
     embedURL: string;
 } | null;
-export declare const test = 1234;
 export {};

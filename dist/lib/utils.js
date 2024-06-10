@@ -329,4 +329,3 @@ export var convertYoutubeUrlToEmbed = function (input) {
     }
     return null;
 };
-export var test = 1234;
