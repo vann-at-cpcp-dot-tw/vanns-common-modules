@@ -1,3 +1,39 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 export var isEmpty = function (value) {
     return value === undefined || value === null || (typeof value === 'object' && Object.keys(value).length === 0) || (typeof value === 'string' && value.trim().length === 0);
     // // test results
@@ -135,15 +171,24 @@ export var getDecimalPlace = function (num) {
     return decimalIndex !== -1 ? numStr.length - decimalIndex - 1 : 0;
 };
 // 滾動到特定 el
-export var scrollToSection = function (_a) {
+export var scrollToSection = function (_a, callback) {
     var _b, _c, _d, _e, _f;
-    var el = _a.el, _g = _a.speed, speed = _g === void 0 ? 800 : _g, _h = _a.offset, offset = _h === void 0 ? 0 : _h;
+    var el = _a.el, _g = _a.offset, offset = _g === void 0 ? 0 : _g, _h = _a.jump, jump = _h === void 0 ? false : _h;
     if (el) {
         var targetRect = el.getBoundingClientRect();
         var targetTop = targetRect.top + window.pageYOffset;
+        var top_1 = (targetTop - Number((((_f = (_e = (_d = (_c = (_b = document === null || document === void 0 ? void 0 : document.body) === null || _b === void 0 ? void 0 : _b.style) === null || _c === void 0 ? void 0 : _c.paddingTop) === null || _d === void 0 ? void 0 : _d.split) === null || _e === void 0 ? void 0 : _e.call(_d, 'px')) === null || _f === void 0 ? void 0 : _f[0]) || 0)) + offset).toFixed();
+        var onScroll_1 = function () {
+            if (window.pageYOffset.toFixed() === top_1) {
+                window.removeEventListener('scroll', onScroll_1);
+                callback === null || callback === void 0 ? void 0 : callback();
+            }
+        };
+        window.addEventListener('scroll', onScroll_1);
+        onScroll_1();
         window.scrollTo({
-            top: targetTop - Number((((_f = (_e = (_d = (_c = (_b = document === null || document === void 0 ? void 0 : document.body) === null || _b === void 0 ? void 0 : _b.style) === null || _c === void 0 ? void 0 : _c.paddingTop) === null || _d === void 0 ? void 0 : _d.split) === null || _e === void 0 ? void 0 : _e.call(_d, 'px')) === null || _f === void 0 ? void 0 : _f[0]) || 0)) + offset,
-            behavior: 'smooth'
+            top: top_1,
+            behavior: jump === true ? undefined : 'smooth'
         });
     }
 };
@@ -162,7 +207,28 @@ export var getItemPositionInViewport = function (_a) {
         }
     }
 };
-// 補 0
+// 複製文字
+export function copyText(passedString) {
+    return __awaiter(this, void 0, void 0, function () {
+        var err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, navigator.clipboard.writeText(passedString)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    console.error('Failed to copy text: ', err_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+// 數字前面補 0
 export var padLeft = function (n, width, z) {
     if (z === void 0) { z = '0'; }
     z = z || '0';
@@ -174,9 +240,11 @@ export var padLeft = function (n, width, z) {
     // pad(123, 4);     // 0123
     // pad(10, 4, '-'); // --10
 };
+// 計算「字元」長度
 export var charBytes = function (str) {
     return str.replace(/[^\x00-\xff]/g, 'xx').length;
 };
+// 計算字串在瀏覽器佔用的寬度（字串寬度受全域 css，如字級、字重...等設定影響）
 export var strWidth = function (text, fontCssProps) {
     if (text === void 0) { text = ''; }
     if (fontCssProps === void 0) { fontCssProps = '1rem'; }
@@ -191,6 +259,7 @@ export var strWidth = function (text, fontCssProps) {
     document.body.removeChild(dom);
     return width;
 };
+// 字串轉駝峰（可指定大駝峰）
 export var toCamelCase = function (str, breakKey, upperCamelCase) {
     if (str === void 0) { str = ''; }
     if (breakKey === void 0) { breakKey = '-'; }
@@ -204,6 +273,7 @@ export var toCamelCase = function (str, breakKey, upperCamelCase) {
     }
     return str;
 };
+// 指定 ratio 後，輸入寬或高其中之一，回傳另一側的值
 export var calcSizeByRatio = function (_a) {
     var w = _a.w, h = _a.h, ratio = _a.ratio;
     // 輸入寬(或高) + 比例, return 符合比例的寬高值
@@ -227,8 +297,8 @@ export var calcSizeByRatio = function (_a) {
         };
     }
 };
+// 取得 object-fit: contain 圖片的實際內容寬高
 export var getContainedSize = function (img) {
-    // 取得 object-fit: contain 圖片的實際內容寬高
     var ratio = img.naturalWidth / img.naturalHeight;
     var width = img.height * ratio;
     var height = img.height;
@@ -237,4 +307,22 @@ export var getContainedSize = function (img) {
         height = img.width / ratio;
     }
     return [width, height];
+};
+// 將 youtube 網址轉成 embed 用的網址
+export var convertYoutubeUrlToEmbed = function (input) {
+    var _a, _b, _c;
+    var youtubeID;
+    if ((_a = input === null || input === void 0 ? void 0 : input.includes) === null || _a === void 0 ? void 0 : _a.call(input, 'https://youtu.be/')) {
+        youtubeID = (_b = input.replace('https://youtu.be/', '').split('?si')) === null || _b === void 0 ? void 0 : _b[0];
+    }
+    else if ((_c = input === null || input === void 0 ? void 0 : input.includes) === null || _c === void 0 ? void 0 : _c.call(input, 'https://www.youtube.com/watch?v=')) {
+        youtubeID = input.replace('https://www.youtube.com/watch?v=', '').split('&')[0];
+    }
+    if (youtubeID) {
+        return {
+            cover: "https://img.youtube.com/vi/".concat(youtubeID, "/0.jpg"),
+            embedURL: "https://www.youtube.com/embed/".concat(youtubeID)
+        };
+    }
+    return null;
 };

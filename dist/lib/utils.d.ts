@@ -29,11 +29,12 @@ export declare const arrayRandom: ({ min, max, length, step }?: {
 }) => number[];
 export declare const arrayChunk: (myArray: any[], chunkSize: number) => any[][];
 export declare const getDecimalPlace: (num: number) => number;
-export declare const scrollToSection: ({ el, speed, offset }: any) => void;
+export declare const scrollToSection: ({ el, offset, jump }: any, callback?: Function) => void;
 export declare const getItemPositionInViewport: ({ el, based }: {
     el: HTMLElement;
     based?: string | undefined;
 }) => number | undefined;
+export declare function copyText(passedString: string): Promise<void>;
 export declare const padLeft: (n: number | string, width: number, z?: string) => string;
 export declare const charBytes: (str: string) => number;
 export declare const strWidth: (text?: string, fontCssProps?: string) => number;
@@ -47,4 +48,8 @@ export declare const calcSizeByRatio: ({ w, h, ratio }: {
     h: number;
 } | undefined;
 export declare const getContainedSize: (img: HTMLImageElement) => number[];
+export declare const convertYoutubeUrlToEmbed: (input: string) => {
+    cover: string;
+    embedURL: string;
+} | null;
 export {};

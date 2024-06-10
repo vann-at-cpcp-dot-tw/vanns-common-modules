@@ -37,7 +37,6 @@ export const isEmpty = function( value:any ){
 
 export const shareFb = function(url:string){
   window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url))
-
 }
 
 export const shareLine = function(url:string){
@@ -51,7 +50,6 @@ export const shareTwitter = function(url:string){
 export const shareLinkedin = function(url:string){
   window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`)
 }
-
 
 export const numberFormat = function(num:any, options:Intl.NumberFormatOptions & {locale?:string} = {}){
 
@@ -169,13 +167,22 @@ export const getDecimalPlace = function(num:number){
 }
 
 // 滾動到特定 el
-export const scrollToSection = function({el, speed=800, offset=0}:any){
-  if (el) {
+export const scrollToSection = function({el, offset=0, jump=false}:any, callback?:Function){
+  if (el){
     const targetRect = el.getBoundingClientRect()
-    const targetTop = targetRect.top + window.pageYOffset;
+    const targetTop = targetRect.top + window.pageYOffset
+    const top = (targetTop - Number((document?.body?.style?.paddingTop?.split?.('px')?.[0] || 0)) + offset).toFixed()
+    const onScroll = function(){
+      if (window.pageYOffset.toFixed() === top){
+        window.removeEventListener('scroll', onScroll)
+        callback?.()
+      }
+    }
+    window.addEventListener('scroll', onScroll)
+    onScroll()
     window.scrollTo({
-      top: targetTop - Number((document?.body?.style?.paddingTop?.split?.('px')?.[0] || 0)) + offset,
-      behavior: 'smooth'
+      top,
+      behavior: jump === true ? undefined : 'smooth'
     })
   }
 }
@@ -201,7 +208,16 @@ export const getItemPositionInViewport = function({el, based='top'}:{el:HTMLElem
   }
 }
 
-// 補 0
+// 複製文字
+export async function copyText(passedString:string){
+  try {
+    await navigator.clipboard.writeText(passedString)
+  } catch (err){
+    console.error('Failed to copy text: ', err)
+  }
+}
+
+// 數字前面補 0
 export const padLeft = function(n:number|string, width:number, z:string = '0'){
   z = z || '0'
   n = n + ''
@@ -214,10 +230,12 @@ export const padLeft = function(n:number|string, width:number, z:string = '0'){
   // pad(10, 4, '-'); // --10
 }
 
+// 計算「字元」長度
 export const charBytes = function(str:string){
   return str.replace(/[^\x00-\xff]/g,'xx').length
 }
 
+// 計算字串在瀏覽器佔用的寬度（字串寬度受全域 css，如字級、字重...等設定影響）
 export const strWidth = function(text='', fontCssProps = '1rem'){
   const dom = document.createElement('div')
   dom.textContent = text
@@ -231,6 +249,7 @@ export const strWidth = function(text='', fontCssProps = '1rem'){
   return width
 }
 
+// 字串轉駝峰（可指定大駝峰）
 export const toCamelCase = function(str='', breakKey='-', upperCamelCase=false){
   const re = new RegExp(`${breakKey}(\\w)`, 'g')
 
@@ -245,7 +264,7 @@ export const toCamelCase = function(str='', breakKey='-', upperCamelCase=false){
   return str
 }
 
-
+// 指定 ratio 後，輸入寬或高其中之一，回傳另一側的值
 export const calcSizeByRatio = function({w, h, ratio}:{w?:number|null|undefined, h?:number|null|undefined, ratio:number}) {
   // 輸入寬(或高) + 比例, return 符合比例的寬高值
   // 比例格式 =  Number((16/9).toFixed(2))
@@ -272,8 +291,8 @@ export const calcSizeByRatio = function({w, h, ratio}:{w?:number|null|undefined,
   }
 }
 
+// 取得 object-fit: contain 圖片的實際內容寬高
 export const getContainedSize = function(img:HTMLImageElement){
-  // 取得 object-fit: contain 圖片的實際內容寬高
   var ratio = img.naturalWidth/img.naturalHeight
   var width = img.height*ratio
   var height = img.height
@@ -282,4 +301,24 @@ export const getContainedSize = function(img:HTMLImageElement){
     height = img.width/ratio
   }
   return [width, height]
+}
+
+// 將 youtube 網址轉成 embed 用的網址
+export const convertYoutubeUrlToEmbed = function(input:string){
+  let youtubeID
+
+  if (input?.includes?.('https://youtu.be/')){
+    youtubeID = input.replace('https://youtu.be/', '').split('?si')?.[0]
+  } else if (input?.includes?.('https://www.youtube.com/watch?v=')){
+    youtubeID = input.replace('https://www.youtube.com/watch?v=', '').split('&')[0]
+  }
+
+  if (youtubeID){
+    return {
+      cover: `https://img.youtube.com/vi/${youtubeID}/0.jpg`,
+      embedURL: `https://www.youtube.com/embed/${youtubeID}`
+    }
+  }
+
+  return null
 }
