@@ -4,11 +4,11 @@ import { TranslateContext } from "~/providers/react/Translate"
 // TODO： 因為 HtmlReactParser 的 bundle size 較高，加上翻譯檔是來自編輯後台（非開放平台），所以大膽採用 dangerouslySetInnerHTML 的方式
 // import HtmlReactParser from 'html-react-parser'
 
-type IParamNode = {
+export type IParamNode = {
   value: unknown,
   className?: string,
   style?: Record<string, string>
- }
+}
 
 export function useTranslate(){
   const translationDoc = useContext(TranslateContext)
