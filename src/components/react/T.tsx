@@ -9,7 +9,7 @@ interface IProps {
   id?: string
   className?: string
   text: string
-  vars: (IParamNode | string | number)[]
+  vars?: (IParamNode | string | number)[]
 }
 
 export default function Translate(props:IProps, ref:React.ReactNode){
