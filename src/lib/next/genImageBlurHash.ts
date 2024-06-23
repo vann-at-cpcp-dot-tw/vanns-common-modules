@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_DOMAIN
+const APP_BASE = process.env.NEXT_PUBLIC_APP_BASE || '/'
 
 export async function genImageBlurHash(url:string, w:number=16, q:number=75) {
   if( !url ){
@@ -6,7 +6,7 @@ export async function genImageBlurHash(url:string, w:number=16, q:number=75) {
   }
 
   const base64str = await fetch(
-    `${baseUrl}/_next/image?url=${url}&w=${w}&q=${q}`
+    `${APP_BASE}_next/image?url=${url}&w=${w}&q=${q}`
   ).then(async (res) =>
     Buffer.from(await res.arrayBuffer()).toString('base64')
   )

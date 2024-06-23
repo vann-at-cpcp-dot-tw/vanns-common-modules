@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
+var APP_BASE = process.env.NEXT_PUBLIC_APP_BASE || '/';
 export function genImageBlurHash(url_1) {
     return __awaiter(this, arguments, void 0, function (url, w, q) {
         var base64str, blurSvg, toBase64;
@@ -47,7 +47,7 @@ export function genImageBlurHash(url_1) {
                     if (!url) {
                         return [2 /*return*/, ''];
                     }
-                    return [4 /*yield*/, fetch("".concat(baseUrl, "/_next/image?url=").concat(url, "&w=").concat(w, "&q=").concat(q)).then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a, _b; return __generator(this, function (_c) {
+                    return [4 /*yield*/, fetch("".concat(APP_BASE, "_next/image?url=").concat(url, "&w=").concat(w, "&q=").concat(q)).then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a, _b; return __generator(this, function (_c) {
                             switch (_c.label) {
                                 case 0:
                                     _b = (_a = Buffer).from;
