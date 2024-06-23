@@ -51,7 +51,7 @@ export function genImageBlurHash(url_1) {
                         console.error('need NEXT_PUBLIC_APP_URL');
                         return [2 /*return*/, ''];
                     }
-                    return [4 /*yield*/, fetch("".concat(APP_URL, "_next/image?url=").concat(url, "&w=").concat(w, "&q=").concat(q)).then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a, _b; return __generator(this, function (_c) {
+                    return [4 /*yield*/, fetch("".concat(APP_URL, "/_next/image?url=").concat(url, "&w=").concat(w, "&q=").concat(q)).then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a, _b; return __generator(this, function (_c) {
                             switch (_c.label) {
                                 case 0:
                                     _b = (_a = Buffer).from;
