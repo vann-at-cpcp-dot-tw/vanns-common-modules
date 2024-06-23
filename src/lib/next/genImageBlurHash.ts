@@ -1,12 +1,17 @@
-const APP_BASE = process.env.NEXT_PUBLIC_APP_BASE || '/'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL
 
 export async function genImageBlurHash(url:string, w:number=16, q:number=75) {
   if( !url ){
     return ''
   }
 
+  if( !APP_URL ){
+    console.error('need NEXT_PUBLIC_APP_URL')
+    return ''
+  }
+
   const base64str = await fetch(
-    `${APP_BASE}_next/image?url=${url}&w=${w}&q=${q}`
+    `${APP_URL}_next/image?url=${url}&w=${w}&q=${q}`
   ).then(async (res) =>
     Buffer.from(await res.arrayBuffer()).toString('base64')
   )
