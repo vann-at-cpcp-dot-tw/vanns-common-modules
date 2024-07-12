@@ -37,8 +37,9 @@
 import React from "react"
 import Link, { LinkProps } from "next/link"
 import { useParams } from "next/navigation"
+import { HTMLProps } from "react"
 
-export type TypeProps = LinkProps & {
+export type TypeProps = HTMLProps<HTMLAnchorElement> & LinkProps & {
   defaultLang: string // pass short code, eg: zh, en...
   lang?: string | string[]
   children?: React.ReactNode
