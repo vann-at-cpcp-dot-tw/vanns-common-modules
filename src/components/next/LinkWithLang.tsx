@@ -43,6 +43,7 @@ export type TypeProps = LinkProps & HTMLProps<HTMLAnchorElement> & {
   defaultLang: string // pass short code, eg: zh, en...
   lang?: string | string[]
   children?: React.ReactNode
+  [key:string]: any
 }
 
 const LinkWithLang = React.forwardRef<HTMLAnchorElement, TypeProps>((props, ref) => {
