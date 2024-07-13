@@ -75,9 +75,9 @@ export function useLangGuard(i18nConfig:TypeI18n, args?:{ withoutQueryString?:bo
 
     if (targetPath) {
       if( args?.withoutQueryString ){
-        router.push(`${targetPath}`)
+        router.push(`${targetPath}${window.location.hash}`)
       }else{
-        router.push(`${targetPath}?${searchString}`)
+        router.push(`${targetPath}?${searchString}${window.location?.hash}`)
       }
     }
 

@@ -41,7 +41,7 @@ export function useLangGuard(i18nConfig, args) {
     var _a = tools(i18nConfig), convertLocaleCode = _a.convertLocaleCode, pathnameWithLang = _a.pathnameWithLang, isSupportedLang = _a.isSupportedLang;
     var localeCode = convertLocaleCode(lang, 'long');
     useEffect(function () {
-        var _a;
+        var _a, _b;
         var browserLocaleCode = navigator.language;
         var defaultLang = i18nConfig.defaultLocale.shortCode;
         var storedLang = localStorage.getItem('lang');
@@ -66,10 +66,10 @@ export function useLangGuard(i18nConfig, args) {
         var targetPath = pathnameWithLang(pathnameWithoutLang, targetLang);
         if (targetPath) {
             if (args === null || args === void 0 ? void 0 : args.withoutQueryString) {
-                router.push("".concat(targetPath));
+                router.push("".concat(targetPath).concat(window.location.hash));
             }
             else {
-                router.push("".concat(targetPath, "?").concat(searchString));
+                router.push("".concat(targetPath, "?").concat(searchString).concat((_b = window.location) === null || _b === void 0 ? void 0 : _b.hash));
             }
         }
     }, []);
