@@ -1,4 +1,4 @@
-import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client"
+import { ApolloLink, ApolloClient, InMemoryCache, HttpLink, createHttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
 import { REVALIDATE, IFetchGQLArgs, IMakeApolloClient } from './index'
@@ -8,14 +8,19 @@ export function makeApolloClient(args?:IMakeApolloClient){
 
   const { uri, context, memoryCacheOptions, middlewares } = args ?? {}
 
-  const httpLink = new HttpLink({
-    uri
-  })
+  const httpLink = new ApolloLink((operation, forward) => {
+    const { uri: contextUri } = operation.getContext()
+    operation.setContext({
+      uri: contextUri || uri  // 使用 context 中的 uri 或默認 uri
+    })
+    return forward(operation)
+  }).concat(createHttpLink())
 
   const middleware = setContext((operation, prevContext) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
+      uri: prevContext.uri || operation.context?.uri || uri,
       fetchOptions: {
         ...(context?.fetchOptions || {}),
         next: {
@@ -48,12 +53,15 @@ export function makeApolloClient(args?:IMakeApolloClient){
 
 export function makeFetcher(getClient:Function){
   return async function fetchGQL(query:TypedDocumentNode, args?:IFetchGQLArgs){
-    const variables = args?.variables || {}
-    const context = args?.context || {}
+    const { variables = {}, context = {} } = args ?? {}
+    const updatedContext = {
+      ...context,
+      uri: context?.uri,
+    }
     const result = await getClient().query({
       query,
       variables,
-      context
+      context: updatedContext
     })
     return result?.data
   }

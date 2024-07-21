@@ -54,21 +54,25 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { ApolloLink, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloLink, ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
 import { REVALIDATE } from './index';
 export function makeApolloClient(args) {
     var _a = args !== null && args !== void 0 ? args : {}, uri = _a.uri, context = _a.context, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
-    var httpLink = new HttpLink({
-        uri: uri
-    });
+    var httpLink = new ApolloLink(function (operation, forward) {
+        var contextUri = operation.getContext().uri;
+        operation.setContext({
+            uri: contextUri || uri // 使用 context 中的 uri 或默認 uri
+        });
+        return forward(operation);
+    }).concat(createHttpLink());
     var middleware = setContext(function (operation, prevContext) {
-        var _a;
+        var _a, _b;
         var prevHeaders = prevContext.headers;
-        return __assign(__assign(__assign(__assign({}, prevContext), { fetchOptions: __assign(__assign({}, ((context === null || context === void 0 ? void 0 : context.fetchOptions) || {})), { next: {
+        return __assign(__assign(__assign(__assign({}, prevContext), { uri: prevContext.uri || ((_a = operation.context) === null || _a === void 0 ? void 0 : _a.uri) || uri, fetchOptions: __assign(__assign({}, ((context === null || context === void 0 ? void 0 : context.fetchOptions) || {})), { next: {
                     revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || REVALIDATE
-                } }) }), context), { headers: __assign(__assign({}, prevHeaders), ((_a = context === null || context === void 0 ? void 0 : context.headers) !== null && _a !== void 0 ? _a : {})) });
+                } }) }), context), { headers: __assign(__assign({}, prevHeaders), ((_b = context === null || context === void 0 ? void 0 : context.headers) !== null && _b !== void 0 ? _b : {})) });
     });
     var getClient = registerApolloClient(function () {
         return new ApolloClient({
@@ -87,19 +91,19 @@ export function makeApolloClient(args) {
 export function makeFetcher(getClient) {
     return function fetchGQL(query, args) {
         return __awaiter(this, void 0, void 0, function () {
-            var variables, context, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, _b, variables, _c, context, updatedContext, result;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
-                        variables = (args === null || args === void 0 ? void 0 : args.variables) || {};
-                        context = (args === null || args === void 0 ? void 0 : args.context) || {};
+                        _a = args !== null && args !== void 0 ? args : {}, _b = _a.variables, variables = _b === void 0 ? {} : _b, _c = _a.context, context = _c === void 0 ? {} : _c;
+                        updatedContext = __assign(__assign({}, context), { uri: context === null || context === void 0 ? void 0 : context.uri });
                         return [4 /*yield*/, getClient().query({
                                 query: query,
                                 variables: variables,
-                                context: context
+                                context: updatedContext
                             })];
                     case 1:
-                        result = _a.sent();
+                        result = _d.sent();
                         return [2 /*return*/, result === null || result === void 0 ? void 0 : result.data];
                 }
             });

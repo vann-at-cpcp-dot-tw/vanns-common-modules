@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { ApolloLink, HttpLink } from "@apollo/client"
+import { ApolloLink, HttpLink, createHttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
 import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink, ApolloNextAppProvider} from "@apollo/experimental-nextjs-app-support/ssr"
 import { REVALIDATE, IMakeApolloClient } from './index'
@@ -17,14 +17,20 @@ export function makeApolloClient(args?:IMakeApolloClient){
 
   const { uri, context,  memoryCacheOptions, middlewares } = args ?? {}
 
-  const httpLink = new HttpLink({
-    uri
-  })
+
+  const httpLink = new ApolloLink((operation, forward) => {
+    const { uri: contextUri } = operation.getContext()
+    operation.setContext({
+      uri: contextUri || uri  // 使用 context 中的 uri 或默認 uri
+    })
+    return forward(operation)
+  }).concat(createHttpLink())
 
   const middleware = setContext((operation, prevContext) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
+      uri: prevContext.uri || operation.context?.uri || uri,
       fetchOptions: {
         ...(context?.fetchOptions || {}),
         next: {
