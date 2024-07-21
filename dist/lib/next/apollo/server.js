@@ -60,13 +60,16 @@ import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rs
 import { REVALIDATE } from './index';
 export function makeApolloClient(args) {
     var _a = args !== null && args !== void 0 ? args : {}, uri = _a.uri, context = _a.context, memoryCacheOptions = _a.memoryCacheOptions, middlewares = _a.middlewares;
-    var httpLink = new ApolloLink(function (operation, forward) {
+    var dynamicUriLink = new ApolloLink(function (operation, forward) {
         var contextUri = operation.getContext().uri;
         operation.setContext({
             uri: contextUri || uri // 使用 context 中的 uri 或默認 uri
         });
         return forward(operation);
-    }).concat(createHttpLink());
+    });
+    var httpLink = createHttpLink({
+        uri: uri
+    });
     var middleware = setContext(function (operation, prevContext) {
         var _a, _b;
         var prevHeaders = prevContext.headers;
@@ -78,6 +81,7 @@ export function makeApolloClient(args) {
         return new ApolloClient({
             cache: new InMemoryCache(memoryCacheOptions || {}),
             link: ApolloLink.from(__spreadArray(__spreadArray([
+                dynamicUriLink,
                 middleware
             ], (middlewares || []), true), [
                 httpLink,

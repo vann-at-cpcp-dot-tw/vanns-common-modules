@@ -17,14 +17,18 @@ export function makeApolloClient(args?:IMakeApolloClient){
 
   const { uri, context,  memoryCacheOptions, middlewares } = args ?? {}
 
-
-  const httpLink = new ApolloLink((operation, forward) => {
+  const dynamicUriLink = new ApolloLink((operation, forward) => {
     const { uri: contextUri } = operation.getContext()
     operation.setContext({
       uri: contextUri || uri  // 使用 context 中的 uri 或默認 uri
     })
     return forward(operation)
-  }).concat(createHttpLink())
+  })
+
+
+  const httpLink = createHttpLink({
+    uri
+  })
 
   const middleware = setContext((operation, prevContext) => {
     const { headers:prevHeaders } = prevContext
@@ -53,11 +57,13 @@ export function makeApolloClient(args?:IMakeApolloClient){
         new SSRMultipartLink({
           stripDefer: true,
         }),
+        dynamicUriLink,
         middleware,
         ...(middlewares || []),
         httpLink,
       ])
       : ApolloLink.from([
+        dynamicUriLink,
         middleware,
         ...(middlewares || []),
         httpLink,
