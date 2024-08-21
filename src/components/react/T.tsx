@@ -12,12 +12,13 @@ interface IProps {
   vars?: (IParamNode | string | number)[]
 }
 
-export default function Translate(props:IProps, ref:React.ReactNode){
+export default function T(props:IProps, ref:React.ReactNode){
   const { id, className } = props ?? {}
   const { __ } = useTranslate()
   const result = useMemo(()=>{
     return __(props.text, props?.vars)
   }, [props.text, props?.vars, __])
+
   return <Suspense fallback={null}>
     <span className={twMerge('', className)}>
       {
