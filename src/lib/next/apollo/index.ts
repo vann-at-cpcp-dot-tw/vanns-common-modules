@@ -1,4 +1,3 @@
-import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 import { ApolloLink } from "@apollo/client"
 
 export const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60)
