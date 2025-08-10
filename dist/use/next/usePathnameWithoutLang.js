@@ -1,4 +1,3 @@
-"use client";
 import { useMemo } from "react";
 import { useParams, usePathname } from "next/navigation";
 export function isPathnameStartWithLang(path, lang) {
