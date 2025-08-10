@@ -3,5 +3,5 @@ interface TypeProps {
     children: React.ReactNode;
     className?: string;
 }
-export default function RatioArea(props: TypeProps): import("react").JSX.Element;
+export default function RatioArea(props: TypeProps): import("react/jsx-runtime").JSX.Element;
 export {};

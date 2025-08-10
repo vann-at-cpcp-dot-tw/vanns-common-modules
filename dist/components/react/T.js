@@ -1,4 +1,5 @@
 "use client";
+import { jsx as _jsx } from "react/jsx-runtime";
 import { Suspense, useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useTranslate } from "../../use/react";
@@ -8,11 +9,7 @@ export default function T(props) {
     const result = useMemo(() => {
         return __(props.text, props?.vars);
     }, [props.text, props?.vars, __]);
-    return <Suspense fallback={null}>
-    <span className={twMerge('', className)}>
-      {typeof result === 'string'
-            ? <span dangerouslySetInnerHTML={{ __html: __(props.text, props?.vars) || '' }}></span>
-            : <span>{__(props.text, props?.vars)}</span>}
-    </span>
-  </Suspense>;
+    return _jsx(Suspense, { fallback: null, children: _jsx("span", { className: twMerge('', className), children: typeof result === 'string'
+                ? _jsx("span", { dangerouslySetInnerHTML: { __html: __(props.text, props?.vars) || '' } })
+                : _jsx("span", { children: __(props.text, props?.vars) }) }) });
 }

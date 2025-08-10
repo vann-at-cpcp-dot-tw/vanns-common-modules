@@ -23,13 +23,14 @@
 // }
 // export default LinkWithLang
 "use client";
+import { jsx as _jsx } from "react/jsx-runtime";
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 const LinkWithLang = React.forwardRef((props, ref) => {
     const { href: propsHref, lang: propsLang, defaultLang, children, ...restProps } = props;
     if (!propsHref) {
-        return <span {...restProps}>{children}</span>;
+        return _jsx("span", { ...restProps, children: children });
     }
     const params = useParams();
     const currentLang = params.lang;
@@ -39,7 +40,7 @@ const LinkWithLang = React.forwardRef((props, ref) => {
     if (typeof propsHref === 'string') {
         href = propsHref.includes('http') ? propsHref : isDefaultLang ? propsHref : `/${redirectTargetLang}${propsHref}`;
     }
-    return <Link href={href} {...restProps} ref={ref}>{children}</Link>;
+    return _jsx(Link, { href: href, ...restProps, ref: ref, children: children });
 });
 LinkWithLang.displayName = 'LinkWithLang';
 export default LinkWithLang;

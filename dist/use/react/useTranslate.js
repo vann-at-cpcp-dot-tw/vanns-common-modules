@@ -1,4 +1,5 @@
-import React, { useCallback, useContext } from "react";
+import { jsx as _jsx } from "react/jsx-runtime";
+import { useCallback, useContext } from "react";
 import { isEmpty } from "../../lib/helpers";
 import { TranslateContext } from "../../providers/react/Translate";
 export function useTranslate() {
@@ -27,7 +28,7 @@ export function useTranslate() {
                     const { value, className, style } = valueNode ?? {};
                     if (value) {
                         result = translatedString.replaceAll(`[s${i + 1}]`, `<span class="${className}" style="${style}">${value}</span>`);
-                        result = <span dangerouslySetInnerHTML={{ __html: result }}></span>;
+                        result = _jsx("span", { dangerouslySetInnerHTML: { __html: result } });
                     }
                 }
             });

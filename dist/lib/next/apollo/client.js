@@ -1,3 +1,4 @@
+import { jsx as _jsx } from "react/jsx-runtime";
 import { ApolloLink, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs";
@@ -52,9 +53,7 @@ export function makeApolloClient(args) {
     };
 }
 export function ApolloClientProvider({ children, makeClient, }) {
-    return <ApolloNextAppProvider makeClient={() => {
+    return _jsx(ApolloNextAppProvider, { makeClient: () => {
             return makeClient();
-        }}>
-    {children}
-  </ApolloNextAppProvider>;
+        }, children: children });
 }

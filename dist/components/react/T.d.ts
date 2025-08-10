@@ -5,5 +5,5 @@ interface IProps {
     text: string;
     vars?: (IParamNode | string | number)[];
 }
-export default function T(props: IProps): import("react").JSX.Element;
+export default function T(props: IProps): import("react/jsx-runtime").JSX.Element;
 export {};
