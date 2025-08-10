@@ -2,7 +2,7 @@
 import { Suspense, useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useTranslate } from "../../use/react";
-export default function T(props, ref) {
+export default function T(props) {
     var _a = props !== null && props !== void 0 ? props : {}, id = _a.id, className = _a.className;
     var __ = useTranslate().__;
     var result = useMemo(function () {

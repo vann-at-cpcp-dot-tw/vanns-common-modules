@@ -12,7 +12,7 @@ interface IProps {
   vars?: (IParamNode | string | number)[]
 }
 
-export default function T(props:IProps, ref:React.ReactNode){
+export default function T(props:IProps){
   const { id, className } = props ?? {}
   const { __ } = useTranslate()
   const result = useMemo(()=>{
