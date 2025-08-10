@@ -1,6 +1,6 @@
 {
   "name": "modules",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,25 +14,29 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.9.10",
-    "@apollo/experimental-nextjs-app-support": "^0.10.0",
+    "@apollo/client-integration-nextjs": "^0.12.3",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/node": "^20.12.3",
-    "@types/react": "^18.3.2",
+    "@types/react": "^19.1.9",
     "clsx": "^2.1.0",
     "html-react-parser": "^5.1.10",
-    "next": "^14.1.4",
+    "next": "15.4.6",
     "query-string": "^9.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-query": "^3.39.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
     "tailwind-merge": "^2.2.2",
     "typescript": "^5.4.3",
     "vue": "^3.4.26",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@types/react-dom": "^18.2.24",
+    "@types/react-dom": "^19.1.7",
     "rimraf": "^5.0.5",
     "tsc-alias": "^1.8.8"
+  },
+  "overrides": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7"
   }
 }

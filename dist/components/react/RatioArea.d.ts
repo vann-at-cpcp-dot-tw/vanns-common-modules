@@ -1,4 +1,3 @@
-/// <reference types="react" />
 interface TypeProps {
     ratio: number | string;
     children: React.ReactNode;

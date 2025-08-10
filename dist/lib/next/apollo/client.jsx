@@ -20,7 +20,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 import { ApolloLink, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink, ApolloNextAppProvider } from "@apollo/experimental-nextjs-app-support/ssr";
+import { ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs";
 import { REVALIDATE } from './index';
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 if (process.env.NODE_ENV === 'development') {
@@ -48,24 +48,14 @@ export function makeApolloClient(args) {
                     revalidate: (context === null || context === void 0 ? void 0 : context.revalidate) || REVALIDATE
                 } }) }), context), { headers: __assign(__assign({}, prevHeaders), ((_b = context === null || context === void 0 ? void 0 : context.headers) !== null && _b !== void 0 ? _b : {})) });
     });
-    var getClient = function () { return new NextSSRApolloClient({
-        cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-        link: typeof window === "undefined"
-            ? ApolloLink.from(__spreadArray(__spreadArray([
-                new SSRMultipartLink({
-                    stripDefer: true,
-                }),
-                dynamicUriLink,
-                middleware
-            ], (middlewares || []), true), [
-                httpLink,
-            ], false))
-            : ApolloLink.from(__spreadArray(__spreadArray([
-                dynamicUriLink,
-                middleware
-            ], (middlewares || []), true), [
-                httpLink,
-            ], false))
+    var getClient = function () { return new ApolloClient({
+        cache: new InMemoryCache(memoryCacheOptions || {}),
+        link: ApolloLink.from(__spreadArray(__spreadArray([
+            dynamicUriLink,
+            middleware
+        ], (middlewares || []), true), [
+            httpLink,
+        ], false))
     }); };
     return {
         getClient: getClient,

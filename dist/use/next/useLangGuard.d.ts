@@ -7,6 +7,6 @@ export declare function tools(i18nConfig: TypeI18n): {
 export declare function useLangGuard(i18nConfig: TypeI18n, args?: {
     withoutQueryString?: boolean;
 }): {
-    lang: string | string[];
+    lang: import("next/dist/server/request/params").ParamValue;
     localeCode: string | undefined;
 };

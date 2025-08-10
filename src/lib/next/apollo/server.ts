@@ -1,6 +1,6 @@
 import { ApolloLink, ApolloClient, InMemoryCache, HttpLink, createHttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
-import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc"
+import { registerApolloClient } from "@apollo/client-integration-nextjs"
 import { REVALIDATE, IFetchGQLArgs, IMakeApolloClient } from './index'
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
 

@@ -32,7 +32,7 @@ export declare const getDecimalPlace: (num: number) => number;
 export declare const scrollToSection: ({ el, offset, jump }: any, callback?: Function) => void;
 export declare const getItemPositionInViewport: ({ el, based }: {
     el: HTMLElement;
-    based?: string | undefined;
+    based?: string;
 }) => number | undefined;
 export declare function copyText(passedString: string): Promise<void>;
 export declare const padLeft: (n: number | string, width: number, z?: string) => string;

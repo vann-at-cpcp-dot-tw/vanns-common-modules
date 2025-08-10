@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { ApolloLink, HttpLink, createHttpLink } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
-import { NextSSRInMemoryCache, NextSSRApolloClient, SSRMultipartLink, ApolloNextAppProvider} from "@apollo/experimental-nextjs-app-support/ssr"
+import { ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs"
 import { REVALIDATE, IMakeApolloClient } from './index'
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev"
 
@@ -50,24 +50,14 @@ export function makeApolloClient(args?:IMakeApolloClient){
   })
 
 
-  const getClient = ()=> new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(memoryCacheOptions || {}),
-    link: typeof window === "undefined"
-      ? ApolloLink.from([
-        new SSRMultipartLink({
-          stripDefer: true,
-        }),
-        dynamicUriLink,
-        middleware,
-        ...(middlewares || []),
-        httpLink,
-      ])
-      : ApolloLink.from([
-        dynamicUriLink,
-        middleware,
-        ...(middlewares || []),
-        httpLink,
-      ])
+  const getClient = ()=> new ApolloClient({
+    cache: new InMemoryCache(memoryCacheOptions || {}),
+    link: ApolloLink.from([
+      dynamicUriLink,
+      middleware,
+      ...(middlewares || []),
+      httpLink,
+    ])
   })
 
   return {

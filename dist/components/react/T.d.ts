@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { IParamNode } from "../../use/react";
 interface IProps {
     id?: string;
