@@ -9,17 +9,11 @@ export function makeApolloClient(args?:IMakeApolloClient){
   const { uri, context, memoryCacheOptions, middlewares } = args ?? {}
 
 
-  const dynamicUriLink = new ApolloLink((operation, forward) => {
-    const { uri: contextUri } = operation.getContext()
-    operation.setContext({
-      uri: contextUri || uri  // 使用 context 中的 uri 或默認 uri
-    })
-    return forward(operation)
-  })
-
-
   const httpLink = createHttpLink({
-    uri
+    uri: (operation) => {
+      const { uri: contextUri } = operation.getContext()
+      return contextUri || uri // 使用 context 中的 uri 或默認 uri
+    }
   })
 
   const middleware = setContext((operation, prevContext) => {
@@ -45,7 +39,6 @@ export function makeApolloClient(args?:IMakeApolloClient){
     return new ApolloClient({
       cache: new InMemoryCache(memoryCacheOptions || {}),
       link: ApolloLink.from([
-        dynamicUriLink,
         middleware,
         ...(middlewares || []),
         httpLink,
