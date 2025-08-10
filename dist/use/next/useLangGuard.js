@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { usePathnameWithoutLang } from "../../use/next/usePathnameWithoutLang";
 import { useSearchObject } from "../../use/next";
-import { isPathnameStartWithLang } from "../..//use/next/usePathnameWithoutLang";
+import { isPathnameStartWithLang } from "../../use/next/usePathnameWithoutLang";
 export function tools(i18nConfig) {
     function pathnameWithLang(path, lang) {
         if (lang === i18nConfig.defaultLocale.shortCode) {
