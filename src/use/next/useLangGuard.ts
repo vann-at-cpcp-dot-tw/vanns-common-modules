@@ -3,7 +3,7 @@ import { useParams, usePathname, useRouter } from "next/navigation"
 import { usePathnameWithoutLang } from "~/use/next/usePathnameWithoutLang"
 import { TypeI18n, i18n } from "~/config/next/i18n.config"
 import { useSearchObject } from "~/use/next"
-import { isPathnameStartWithLang } from "~/use/next/usePathnameWithoutLang"
+import { isPathnameStartWithLang } from "~/utils/pathname"
 
 export function tools(i18nConfig:TypeI18n){
 
