@@ -8,48 +8,47 @@ export function tools(i18nConfig) {
         if (lang === i18nConfig.defaultLocale.shortCode) {
             return path;
         }
-        return "/".concat(lang).concat(path);
+        return `/${lang}${path}`;
     }
     function convertLocaleCode(lang, to) {
-        var target;
+        let target;
         switch (to) {
             case 'short':
-                target = i18nConfig.locales.find(function (node) { return node.code === lang; });
-                return (target === null || target === void 0 ? void 0 : target.shortCode) || i18nConfig.defaultLocale.shortCode;
+                target = i18nConfig.locales.find((node) => node.code === lang);
+                return target?.shortCode || i18nConfig.defaultLocale.shortCode;
             case 'long':
-                target = i18nConfig.locales.find(function (node) { return node.shortCode === lang; });
-                return (target === null || target === void 0 ? void 0 : target.code) || i18nConfig.defaultLocale.code;
+                target = i18nConfig.locales.find((node) => node.shortCode === lang);
+                return target?.code || i18nConfig.defaultLocale.code;
         }
     }
     function isSupportedLang(shortCode) {
-        var target = i18nConfig.locales.find(function (node) { return node.shortCode === shortCode; });
+        const target = i18nConfig.locales.find((node) => node.shortCode === shortCode);
         return target ? true : false;
     }
     return {
-        pathnameWithLang: pathnameWithLang,
-        convertLocaleCode: convertLocaleCode,
-        isSupportedLang: isSupportedLang,
+        pathnameWithLang,
+        convertLocaleCode,
+        isSupportedLang,
     };
 }
 export function useLangGuard(i18nConfig, args) {
-    var params = useParams();
-    var router = useRouter();
-    var pathname = usePathname();
-    var pathnameWithoutLang = usePathnameWithoutLang();
-    var searchString = useSearchObject().searchString;
-    var lang = params.lang;
-    var _a = tools(i18nConfig), convertLocaleCode = _a.convertLocaleCode, pathnameWithLang = _a.pathnameWithLang, isSupportedLang = _a.isSupportedLang;
-    var localeCode = convertLocaleCode(lang, 'long');
-    useEffect(function () {
-        var _a, _b;
-        var browserLocaleCode = navigator.language;
-        var defaultLang = i18nConfig.defaultLocale.shortCode;
-        var storedLang = localStorage.getItem('lang');
-        var browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode;
-        var paramLang = lang;
-        var langShortCodes = (_a = i18nConfig.locales) === null || _a === void 0 ? void 0 : _a.map(function (node) { return node.shortCode; });
-        var isUrlHasLang = langShortCodes.some(function (node) { return isPathnameStartWithLang(pathname, node); });
-        var targetLang;
+    const params = useParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const pathnameWithoutLang = usePathnameWithoutLang();
+    const { searchString } = useSearchObject();
+    const { lang } = params;
+    const { convertLocaleCode, pathnameWithLang, isSupportedLang } = tools(i18nConfig);
+    const localeCode = convertLocaleCode(lang, 'long');
+    useEffect(() => {
+        const browserLocaleCode = navigator.language;
+        const defaultLang = i18nConfig.defaultLocale.shortCode;
+        const storedLang = localStorage.getItem('lang');
+        const browserLang = convertLocaleCode(browserLocaleCode, 'short') || i18nConfig.defaultLocale.shortCode;
+        const paramLang = lang;
+        const langShortCodes = i18nConfig.locales?.map((node) => node.shortCode);
+        const isUrlHasLang = langShortCodes.some((node) => isPathnameStartWithLang(pathname, node));
+        let targetLang;
         if (isUrlHasLang) { // 如果網址有帶 lang，則尊重網址
             targetLang = paramLang;
         }
@@ -63,18 +62,18 @@ export function useLangGuard(i18nConfig, args) {
                 targetLang = isSupportedLang(browserLang) ? browserLang : defaultLang;
             }
         }
-        var targetPath = pathnameWithLang(pathnameWithoutLang, targetLang);
+        const targetPath = pathnameWithLang(pathnameWithoutLang, targetLang);
         if (targetPath) {
-            if (args === null || args === void 0 ? void 0 : args.withoutQueryString) {
-                router.push("".concat(targetPath).concat(window.location.hash));
+            if (args?.withoutQueryString) {
+                router.push(`${targetPath}${window.location.hash}`);
             }
             else {
-                router.push("".concat(targetPath, "?").concat(searchString).concat((_b = window.location) === null || _b === void 0 ? void 0 : _b.hash));
+                router.push(`${targetPath}?${searchString}${window.location?.hash}`);
             }
         }
     }, []);
     return {
-        lang: lang,
-        localeCode: localeCode,
+        lang,
+        localeCode,
     };
 }

@@ -1,9 +1,9 @@
 import { useWindowSize } from "../../use/react";
 import { useEffect, useState } from "react";
 export function useIsClient() {
-    var viewport = useWindowSize();
-    var _a = useState(false), isClient = _a[0], setIsClient = _a[1];
-    useEffect(function () {
+    const viewport = useWindowSize();
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
         if (viewport.width && viewport.width > 0) {
             setIsClient(true);
         }

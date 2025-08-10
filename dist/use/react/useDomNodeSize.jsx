@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 export function useDomNodeSize() {
-    var _a = useState({
+    const [state, setState] = useState({
         width: 0,
         height: 0,
         node: null,
-    }), state = _a[0], setState = _a[1];
-    var setNode = useCallback(function (refNode) {
+    });
+    const setNode = useCallback((refNode) => {
         if (refNode) {
             setState({
                 width: refNode.getBoundingClientRect().width,
@@ -14,12 +14,12 @@ export function useDomNodeSize() {
             });
         }
     }, []);
-    useEffect(function () {
-        var targetElement = state.node;
+    useEffect(() => {
+        const targetElement = state.node;
         if (!targetElement) {
             return;
         }
-        var resizeObserver = new ResizeObserver(function () {
+        const resizeObserver = new ResizeObserver(() => {
             setState({
                 width: targetElement.getBoundingClientRect().width,
                 height: targetElement.getBoundingClientRect().height,
@@ -27,12 +27,12 @@ export function useDomNodeSize() {
             });
         });
         resizeObserver.observe(targetElement);
-        return function () {
+        return () => {
             resizeObserver.disconnect();
         };
     }, [state.node]);
     return {
         size: state,
-        setNode: setNode
+        setNode
     };
 }

@@ -1,4 +1,4 @@
-var locales = [
+const locales = [
     {
         code: 'zh-TW',
         shortCode: 'zh',
@@ -10,7 +10,7 @@ var locales = [
         name: 'English'
     },
 ];
-export var i18n = {
+export const i18n = {
     defaultLocale: locales[0],
-    locales: locales
+    locales
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import LinkWithLang from './LinkWithLang';
-export var createLinkWithLangComponent = function (defaultLang) {
-    var WrappedLinkWithLang = React.forwardRef(function (props, ref) {
+export const createLinkWithLangComponent = (defaultLang) => {
+    const WrappedLinkWithLang = React.forwardRef((props, ref) => {
         return <LinkWithLang {...props} defaultLang={defaultLang} ref={ref}/>;
     });
     WrappedLinkWithLang.displayName = 'WrappedLinkWithLang';

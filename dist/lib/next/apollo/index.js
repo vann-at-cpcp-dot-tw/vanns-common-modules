@@ -1,1 +1,1 @@
-export var REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60);
+export const REVALIDATE = Number(process.env.NEXT_PUBLIC_REVALIDATE || 60);
