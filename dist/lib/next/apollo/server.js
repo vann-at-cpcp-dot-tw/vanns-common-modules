@@ -4,15 +4,11 @@ import { registerApolloClient } from "@apollo/client-integration-nextjs";
 import { REVALIDATE } from './index';
 export function makeApolloClient(args) {
     const { uri, context, memoryCacheOptions, middlewares } = args ?? {};
-    const dynamicUriLink = new ApolloLink((operation, forward) => {
-        const { uri: contextUri } = operation.getContext();
-        operation.setContext({
-            uri: contextUri || uri // 使用 context 中的 uri 或默認 uri
-        });
-        return forward(operation);
-    });
     const httpLink = createHttpLink({
-        uri
+        uri: (operation) => {
+            const { uri: contextUri } = operation.getContext();
+            return contextUri || uri; // 使用 context 中的 uri 或默認 uri
+        }
     });
     const middleware = setContext((operation, prevContext) => {
         const { headers: prevHeaders } = prevContext;
@@ -36,7 +32,6 @@ export function makeApolloClient(args) {
         return new ApolloClient({
             cache: new InMemoryCache(memoryCacheOptions || {}),
             link: ApolloLink.from([
-                dynamicUriLink,
                 middleware,
                 ...(middlewares || []),
                 httpLink,
