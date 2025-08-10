@@ -1,2 +1,3 @@
-export declare function isPathnameStartWithLang(path: string, lang: string): boolean;
+import { isPathnameStartWithLang } from '../../utils/pathname';
+export { isPathnameStartWithLang };
 export declare function usePathnameWithoutLang(): string;

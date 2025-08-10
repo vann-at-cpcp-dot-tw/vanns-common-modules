@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { ApolloLink, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs";
+import { SSRMultipartLink, ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs";
 import { REVALIDATE } from './index';
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 if (process.env.NODE_ENV === 'development') {
@@ -41,12 +41,22 @@ export function makeApolloClient(args) {
     });
     const getClient = () => new ApolloClient({
         cache: new InMemoryCache(memoryCacheOptions || {}),
-        link: ApolloLink.from([
-            dynamicUriLink,
-            middleware,
-            ...(middlewares || []),
-            httpLink,
-        ])
+        link: typeof window === "undefined"
+            ? ApolloLink.from([
+                new SSRMultipartLink({
+                    stripDefer: true,
+                }),
+                dynamicUriLink,
+                middleware,
+                ...(middlewares || []),
+                httpLink,
+            ])
+            : ApolloLink.from([
+                dynamicUriLink,
+                middleware,
+                ...(middlewares || []),
+                httpLink,
+            ])
     });
     return {
         getClient,

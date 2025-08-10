@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import { useParams, usePathname } from "next/navigation";
-export function isPathnameStartWithLang(path, lang) {
-    const pattern = new RegExp(`^/${lang}(?:/|\\?|$)`);
-    return pattern.test(path);
-}
+// 為了求取相容性（某些依賴 modules 的其他專案的 import 可能失效）
+import { isPathnameStartWithLang } from '../../utils/pathname';
+export { isPathnameStartWithLang };
 export function usePathnameWithoutLang() {
     const { lang } = useParams();
     const pathname = usePathname();
