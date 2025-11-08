@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { ApolloLink, createHttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { SetContextLink } from "@apollo/client/link/context";
 import { SSRMultipartLink, ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs";
 import { REVALIDATE } from './index';
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
@@ -17,11 +17,11 @@ export function makeApolloClient(args) {
             return contextUri || uri; // 使用 context 中的 uri 或默認 uri
         }
     });
-    const middleware = setContext((operation, prevContext) => {
+    const middleware = new SetContextLink((prevContext, operation) => {
         const { headers: prevHeaders } = prevContext;
         return {
             ...prevContext,
-            uri: prevContext.uri || operation.context?.uri || uri,
+            uri: prevContext.uri || uri,
             fetchOptions: {
                 ...(context?.fetchOptions || {}),
                 next: {

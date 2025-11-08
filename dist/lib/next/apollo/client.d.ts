@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ApolloClient } from "@apollo/client-integration-nextjs";
 import { IMakeApolloClient } from './index';
 export declare function makeApolloClient(args?: IMakeApolloClient): {
-    getClient: () => ApolloClient<unknown>;
+    getClient: () => ApolloClient;
 };
 export declare function ApolloClientProvider({ children, makeClient, }: {
     children: ReactNode;

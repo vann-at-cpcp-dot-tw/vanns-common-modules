@@ -1,5 +1,5 @@
 import { ApolloLink, ApolloClient, InMemoryCache, HttpLink, createHttpLink } from "@apollo/client"
-import { setContext } from "@apollo/client/link/context"
+import { SetContextLink } from "@apollo/client/link/context"
 import { registerApolloClient } from "@apollo/client-integration-nextjs"
 import { REVALIDATE, IFetchGQLArgs, IMakeApolloClient } from './index'
 import { TypedDocumentNode } from "@graphql-typed-document-node/core"
@@ -16,11 +16,11 @@ export function makeApolloClient(args?:IMakeApolloClient){
     }
   })
 
-  const middleware = setContext((operation, prevContext) => {
+  const middleware = new SetContextLink((prevContext, operation) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
-      uri: prevContext.uri || operation.context?.uri || uri,
+      uri: prevContext.uri || uri,
       fetchOptions: {
         ...(context?.fetchOptions || {}),
         next: {

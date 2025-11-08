@@ -1,5 +1,5 @@
 import { ApolloLink, ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { SetContextLink } from "@apollo/client/link/context";
 import { registerApolloClient } from "@apollo/client-integration-nextjs";
 import { REVALIDATE } from './index';
 export function makeApolloClient(args) {
@@ -10,11 +10,11 @@ export function makeApolloClient(args) {
             return contextUri || uri; // 使用 context 中的 uri 或默認 uri
         }
     });
-    const middleware = setContext((operation, prevContext) => {
+    const middleware = new SetContextLink((prevContext, operation) => {
         const { headers: prevHeaders } = prevContext;
         return {
             ...prevContext,
-            uri: prevContext.uri || operation.context?.uri || uri,
+            uri: prevContext.uri || uri,
             fetchOptions: {
                 ...(context?.fetchOptions || {}),
                 next: {

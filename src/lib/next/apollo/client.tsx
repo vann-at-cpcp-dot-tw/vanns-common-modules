@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { ApolloLink, createHttpLink } from "@apollo/client"
-import { setContext } from "@apollo/client/link/context"
+import { SetContextLink } from "@apollo/client/link/context"
 import { SSRMultipartLink, ApolloNextAppProvider, ApolloClient, InMemoryCache } from "@apollo/client-integration-nextjs"
 import { REVALIDATE, IMakeApolloClient } from './index'
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev"
@@ -24,11 +24,11 @@ export function makeApolloClient(args?:IMakeApolloClient){
     }
   })
 
-  const middleware = setContext((operation, prevContext) => {
+  const middleware = new SetContextLink((prevContext, operation) => {
     const { headers:prevHeaders } = prevContext
     return {
       ...prevContext,
-      uri: prevContext.uri || operation.context?.uri || uri,
+      uri: prevContext.uri || uri,
       fetchOptions: {
         ...(context?.fetchOptions || {}),
         next: {
